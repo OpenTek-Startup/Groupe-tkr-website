@@ -1,0 +1,6 @@
+[
+  { "$id": "v1", "order": 1, "title_fr": "Rapidité", "title_en": "Speed", "description_fr": "Comme un TGV, nous tenons les délais annoncés, du premier plan à la remise des clés.", "description_en": "Like a high-speed train, we keep the deadlines we set, from the first plan to the handover." },
+  { "$id": "v2", "order": 2, "title_fr": "Solidité", "title_en": "Solidity", "description_fr": "Des fondations qui durent — dans le béton comme dans nos engagements envers nos clients.", "description_en": "Foundations that last — in concrete as much as in our commitments to clients." },
+  { "$id": "v3", "order": 3, "title_fr": "Intégrité", "title_en": "Integrity", "description_fr": "Une gestion transparente des chantiers, des baux et des contrats, filière après filière.", "description_en": "Transparent management of sites, leases and contracts, across every division." },
+  { "$id": "v4", "order": 4, "title_fr": "Proximité", "title_en": "Closeness", "description_fr": "Des équipes locales, présentes sur le terrain à Yaoundé et dans les localités environnantes.", "description_en": "Local teams, present on the ground in Yaoundé and surrounding areas." }
+]

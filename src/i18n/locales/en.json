@@ -1,0 +1,29 @@
+{
+  "nav": { "home": "Home", "about": "About", "services": "What We Do", "projects": "Projects", "jobs": "Careers", "events": "Events", "blog": "Blog", "contact": "Contact", "legal": "Legal Notice", "cta": "Contact Us" },
+  "hero": {
+    "eyebrow": "Multi-sector Group — Yaoundé, Cameroon",
+    "title1": "Four businesses,",
+    "title2": "one single speed",
+    "title3": ": that of the TGV.",
+    "lead": "From construction to the table, through land and digital — Groupe TKR designs, builds and operates four complementary divisions, with the same standard of speed and solidity.",
+    "cta1": "Discover our businesses",
+    "cta2": "See our projects",
+    "stat1": "Years of activity", "stat2": "Sites delivered", "stat3": "Integrated divisions", "stat4": "Employees"
+  },
+  "about": { "eyebrow": "The Group", "title": "One group, four divisions, one signature",
+    "p1": "Founded in Yaoundé, Groupe TKR built its reputation on construction sites before diversifying into real estate, agribusiness and digital services. Each division operates with its own expertise, under one shared standard: deliver fast, deliver well.",
+    "p2": "This four-division structure lets the Group master the entire value chain — from constructing a building to developing the land it stands on, to the digital tools that run its sites.",
+    "sig": "— Groupe TKR Management" },
+  "values": { "eyebrow": "Our values", "title": "What guides every division" },
+  "services": { "eyebrow": "What we do", "title": "Four divisions, one organisation", "lead": "Each Groupe TKR division answers a specific need, with its own teams and expertise.", "more": "Learn more" },
+  "projects": { "eyebrow": "Projects — examples", "title": "A glimpse of our divisions at work", "lead": "Illustrative examples — to be replaced with your real projects and photos." },
+  "testimonials": { "eyebrow": "Testimonials — examples", "title": "What people say" },
+  "team": { "eyebrow": "The team", "title": "The people behind the Group" },
+  "jobs": { "eyebrow": "Careers", "title": "Join Groupe TKR", "lead": "Find the positions currently open across our divisions.", "empty": "No openings published yet. Check back soon!", "apply": "Apply" },
+  "events": { "eyebrow": "Events", "title": "Upcoming events", "empty": "No upcoming events at the moment." },
+  "blog": { "eyebrow": "News", "title": "Groupe TKR Blog", "empty": "No articles published yet.", "readMore": "Read article" },
+  "contact": { "eyebrow": "Contact", "title": "Have a project for us?", "lead": "Write to us, a member of the Groupe TKR team will get back to you.", "form_name": "Full name", "form_email": "Email address", "form_message": "Your message", "form_submit": "Send message", "info_title": "Contact details" },
+  "legal": { "eyebrow": "Legal information", "title": "Legal Notice" },
+  "footer": { "tagline": "The Construction TGV — civil engineering, real estate, aquaculture and digital, from Yaoundé.", "branches": "Our divisions", "nav": "Navigation", "newsletter": "Newsletter", "newsletter_lead": "Site updates and new offers from the Group.", "newsletter_placeholder": "Email address", "newsletter_cta": "Subscribe", "rights": "All rights reserved.", "madeby": "Site built by" },
+  "common": { "provisional_banner": "Provisional content — pending final information from Groupe TKR" }
+}

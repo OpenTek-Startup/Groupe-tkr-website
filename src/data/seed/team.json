@@ -1,0 +1,5 @@
+[
+  { "$id": "t1", "name": "Nom du Directeur Général", "role_fr": "Directeur Général — Groupe TKR", "role_en": "CEO — Groupe TKR", "bio_fr": "Biographie provisoire à compléter par le Groupe TKR.", "bio_en": "Provisional bio, to be completed by Groupe TKR." },
+  { "$id": "t2", "name": "Nom du Responsable BTP", "role_fr": "Directeur des opérations — TKR BTP", "role_en": "Operations Director — TKR Construction", "bio_fr": "Biographie provisoire à compléter par le Groupe TKR.", "bio_en": "Provisional bio, to be completed by Groupe TKR." },
+  { "$id": "t3", "name": "Nom du Responsable Opentek", "role_fr": "Responsable IT & Infographie — Opentek", "role_en": "IT & Design Lead — Opentek", "bio_fr": "Biographie provisoire à compléter par le Groupe TKR.", "bio_en": "Provisional bio, to be completed by Groupe TKR." }
+]

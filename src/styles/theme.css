@@ -1,0 +1,91 @@
+:root{
+  --maroon:#6E1220;
+  --maroon-dark:#4A0C16;
+  --charcoal:#1B1815;
+  --ink:#221E1B;
+  --concrete:#EDE8E0;
+  --concrete-dark:#DFD8CA;
+  --paper:#F8F5EF;
+  --amber:#DE9F3C;
+  --brick:#C4536F;
+  --teal:#4FA391;
+  --indigo:#8377D6;
+  --line: rgba(34,30,27,.14);
+  --line-strong: rgba(34,30,27,.28);
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Work Sans', sans-serif;
+  background:var(--concrete);
+  color:var(--ink);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{
+  font-family:'Oswald', sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.02em;
+  color:var(--charcoal);
+  line-height:1.1;
+}
+.mono{font-family:'IBM Plex Mono', monospace;}
+a{color:inherit; text-decoration:none;}
+img{max-width:100%; display:block;}
+button{font-family:inherit; cursor:pointer;}
+.wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+section{position:relative;}
+@media (max-width:560px){ .wrap{padding:0 20px;} }
+
+/* ---- Blueprint corner bracket (signature motif) ---- */
+.bp-frame{position:relative;}
+.bp-frame::before, .bp-frame::after,
+.bp-frame .bp-tr, .bp-frame .bp-br{
+  content:""; position:absolute; width:18px; height:18px;
+  border-color:var(--line-strong); pointer-events:none;
+}
+.bp-frame::before{ top:0; left:0; border-top:2px solid; border-left:2px solid; }
+.bp-frame::after{ bottom:0; left:0; border-bottom:2px solid; border-left:2px solid; }
+.bp-frame .bp-tr{ top:0; right:0; border-top:2px solid; border-right:2px solid; }
+.bp-frame .bp-br{ bottom:0; right:0; border-bottom:2px solid; border-right:2px solid; }
+
+/* ---- Page hero (used on inner pages) ---- */
+.page-hero{background:var(--charcoal); color:var(--paper); padding:64px 0 56px;}
+.page-hero .eyebrow{color:var(--amber);}
+.page-hero .eyebrow::before{background:var(--amber);}
+.page-hero h1{color:var(--paper); font-size:38px; max-width:16em;}
+.page-hero p{color:#C4BCAD; margin-top:14px; max-width:56ch; font-size:15px;}
+
+.eyebrow{
+  font-family:'IBM Plex Mono'; font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--maroon); display:flex; align-items:center; gap:10px; margin-bottom:16px;
+}
+.eyebrow::before{content:""; width:26px; height:1px; background:var(--maroon); display:inline-block;}
+
+.section-head{max-width:640px; margin-bottom:44px;}
+.section-head h2{font-size:30px; margin-bottom:10px;}
+.section-head p{color:#544D45; font-size:15px;}
+
+.btn-primary{background:var(--amber); color:var(--charcoal); padding:12px 22px; font-weight:600; font-size:14px; border-radius:2px; border:none; display:inline-block;}
+.btn-primary:hover{background:#f0b25c;}
+.btn-ghost{border:1px solid var(--line-strong); color:var(--ink); padding:12px 22px; font-weight:600; font-size:14px; border-radius:2px; background:none; display:inline-block;}
+.btn-ghost:hover{border-color:var(--maroon); color:var(--maroon);}
+.btn-maroon{background:var(--maroon); color:var(--paper); padding:12px 22px; font-weight:600; font-size:14px; border-radius:2px; border:none; display:inline-block;}
+.btn-maroon:hover{background:var(--maroon-dark);}
+
+.card{background:var(--paper); border:1px solid var(--line);}
+.tag-pill{font-family:'IBM Plex Mono'; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; padding:4px 10px; border-radius:20px; display:inline-block;}
+
+.state-msg{
+  font-family:'IBM Plex Mono'; font-size:13px; color:#8b8377; padding:40px 0; text-align:center;
+}
+.badge-fallback{
+  display:inline-flex; align-items:center; gap:8px; font-family:'IBM Plex Mono'; font-size:11px;
+  background:#FBEFD6; color:#8a5f1f; border:1px solid #EBD6A6; padding:6px 12px; border-radius:20px; margin-bottom:20px;
+}
+
+.grid-2{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+.grid-3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px;}
+.grid-4{display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:20px;}
+@media (max-width:900px){ .grid-3, .grid-4{grid-template-columns:1fr 1fr;} }
+@media (max-width:560px){ .grid-2, .grid-3, .grid-4{grid-template-columns:1fr;} }

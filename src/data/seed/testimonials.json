@@ -1,0 +1,4 @@
+[
+  { "$id": "te1", "name": "Marc Essomba", "role_fr": "Client — Programme Les Cèdres", "role_en": "Client — Les Cèdres Programme", "quote_fr": "Le chantier de notre résidence a été livré dans les délais annoncés, avec un suivi rigoureux à chaque étape.", "quote_en": "Our residence was delivered on the announced schedule, with rigorous follow-up at every stage." },
+  { "$id": "te2", "name": "Sandrine Ndongo", "role_fr": "Restauratrice, cliente Aquaculture", "role_en": "Restaurant owner, Aquaculture client", "quote_fr": "Nous nous approvisionnons chaque semaine auprès de la ferme d'Obala : fraîcheur et régularité au rendez-vous.", "quote_en": "We source weekly from the Obala farm: freshness and consistency, every time." }
+]

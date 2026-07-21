@@ -1,0 +1,4 @@
+[
+  { "$id": "j1", "title_fr": "Chef de chantier BTP", "title_en": "Construction Site Supervisor", "branch": "btp", "type_fr": "CDI", "type_en": "Permanent", "location_fr": "Yaoundé", "location_en": "Yaoundé", "description_fr": "Poste exemple — à remplacer par une offre réelle du Groupe TKR.", "description_en": "Example listing — to be replaced with a real Groupe TKR vacancy." },
+  { "$id": "j2", "title_fr": "Développeur web", "title_en": "Web Developer", "branch": "opentek", "type_fr": "CDI", "type_en": "Permanent", "location_fr": "Yaoundé", "location_en": "Yaoundé", "description_fr": "Poste exemple — à remplacer par une offre réelle du Groupe TKR.", "description_en": "Example listing — to be replaced with a real Groupe TKR vacancy." }
+]

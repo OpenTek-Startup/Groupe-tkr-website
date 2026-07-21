@@ -1,0 +1,131 @@
+// Décrit, pour chaque collection Appwrite, les champs à afficher dans le
+// back-office générique (liste + formulaire de création/édition).
+// "key" doit correspondre à une entrée de src/lib/appwrite.js (COLLECTIONS)
+// et de src/data/seed/*.json.
+
+export const ADMIN_COLLECTIONS = [
+  {
+    key: "branches",
+    label: "Filières / Branches",
+    titleField: "name_fr",
+    fields: [
+      { name: "code", label: "Code", type: "text" },
+      { name: "color", label: "Couleur (amber/brick/teal/indigo)", type: "text" },
+      { name: "name_fr", label: "Nom (FR)", type: "text" },
+      { name: "name_en", label: "Nom (EN)", type: "text" },
+      { name: "title_fr", label: "Titre (FR)", type: "text" },
+      { name: "title_en", label: "Titre (EN)", type: "text" },
+      { name: "description_fr", label: "Description (FR)", type: "textarea" },
+      { name: "description_en", label: "Description (EN)", type: "textarea" },
+    ],
+  },
+  {
+    key: "values",
+    label: "Valeurs",
+    titleField: "title_fr",
+    fields: [
+      { name: "order", label: "Ordre", type: "number" },
+      { name: "title_fr", label: "Titre (FR)", type: "text" },
+      { name: "title_en", label: "Titre (EN)", type: "text" },
+      { name: "description_fr", label: "Description (FR)", type: "textarea" },
+      { name: "description_en", label: "Description (EN)", type: "textarea" },
+    ],
+  },
+  {
+    key: "services",
+    label: "Services",
+    titleField: "title_fr",
+    fields: [
+      { name: "branch", label: "Branche (btp/immobilier/aquaculture/opentek)", type: "text" },
+      { name: "title_fr", label: "Titre (FR)", type: "text" },
+      { name: "title_en", label: "Titre (EN)", type: "text" },
+      { name: "description_fr", label: "Description (FR)", type: "textarea" },
+      { name: "description_en", label: "Description (EN)", type: "textarea" },
+    ],
+  },
+  {
+    key: "projects",
+    label: "Réalisations",
+    titleField: "title_fr",
+    fields: [
+      { name: "branch", label: "Branche", type: "text" },
+      { name: "title_fr", label: "Titre (FR)", type: "text" },
+      { name: "title_en", label: "Titre (EN)", type: "text" },
+      { name: "location_fr", label: "Lieu (FR)", type: "text" },
+      { name: "location_en", label: "Lieu (EN)", type: "text" },
+      { name: "description_fr", label: "Description (FR)", type: "textarea" },
+      { name: "description_en", label: "Description (EN)", type: "textarea" },
+      { name: "image", label: "URL image", type: "text" },
+    ],
+  },
+  {
+    key: "team",
+    label: "Équipe",
+    titleField: "name",
+    fields: [
+      { name: "name", label: "Nom complet", type: "text" },
+      { name: "role_fr", label: "Poste (FR)", type: "text" },
+      { name: "role_en", label: "Poste (EN)", type: "text" },
+      { name: "bio_fr", label: "Biographie (FR)", type: "textarea" },
+      { name: "bio_en", label: "Biographie (EN)", type: "textarea" },
+      { name: "photo", label: "URL photo", type: "text" },
+    ],
+  },
+  {
+    key: "testimonials",
+    label: "Témoignages",
+    titleField: "name",
+    fields: [
+      { name: "name", label: "Nom du client", type: "text" },
+      { name: "role_fr", label: "Fonction / société (FR)", type: "text" },
+      { name: "role_en", label: "Fonction / société (EN)", type: "text" },
+      { name: "quote_fr", label: "Témoignage (FR)", type: "textarea" },
+      { name: "quote_en", label: "Témoignage (EN)", type: "textarea" },
+    ],
+  },
+  {
+    key: "jobs",
+    label: "Offres d'emploi",
+    titleField: "title_fr",
+    fields: [
+      { name: "title_fr", label: "Intitulé (FR)", type: "text" },
+      { name: "title_en", label: "Intitulé (EN)", type: "text" },
+      { name: "branch", label: "Branche", type: "text" },
+      { name: "type_fr", label: "Type de contrat (FR)", type: "text" },
+      { name: "type_en", label: "Type de contrat (EN)", type: "text" },
+      { name: "location_fr", label: "Lieu (FR)", type: "text" },
+      { name: "location_en", label: "Lieu (EN)", type: "text" },
+      { name: "description_fr", label: "Description (FR)", type: "textarea" },
+      { name: "description_en", label: "Description (EN)", type: "textarea" },
+    ],
+  },
+  {
+    key: "events",
+    label: "Événements",
+    titleField: "title_fr",
+    fields: [
+      { name: "title_fr", label: "Titre (FR)", type: "text" },
+      { name: "title_en", label: "Titre (EN)", type: "text" },
+      { name: "date", label: "Date (AAAA-MM-JJ)", type: "text" },
+      { name: "location_fr", label: "Lieu (FR)", type: "text" },
+      { name: "location_en", label: "Lieu (EN)", type: "text" },
+      { name: "description_fr", label: "Description (FR)", type: "textarea" },
+      { name: "description_en", label: "Description (EN)", type: "textarea" },
+    ],
+  },
+  {
+    key: "blog",
+    label: "Articles de blog",
+    titleField: "title_fr",
+    fields: [
+      { name: "title_fr", label: "Titre (FR)", type: "text" },
+      { name: "title_en", label: "Titre (EN)", type: "text" },
+      { name: "date", label: "Date (AAAA-MM-JJ)", type: "text" },
+      { name: "author", label: "Auteur", type: "text" },
+      { name: "excerpt_fr", label: "Résumé (FR)", type: "textarea" },
+      { name: "excerpt_en", label: "Résumé (EN)", type: "textarea" },
+      { name: "content_fr", label: "Contenu complet (FR)", type: "textarea" },
+      { name: "content_en", label: "Contenu complet (EN)", type: "textarea" },
+    ],
+  },
+];

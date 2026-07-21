@@ -1,0 +1,6 @@
+[
+  { "$id": "p1", "branch": "btp", "title_fr": "Résidence Les Cèdres", "title_en": "Les Cèdres Residence", "location_fr": "Yaoundé — exemple", "location_en": "Yaoundé — example", "description_fr": "Immeuble R+3, 12 appartements livrés.", "description_en": "4-storey building, 12 apartments delivered." },
+  { "$id": "p2", "branch": "immobilier", "title_fr": "Lotissement Nkolbisson", "title_en": "Nkolbisson Estate", "location_fr": "Nkolbisson — exemple", "location_en": "Nkolbisson — example", "description_fr": "40 parcelles viabilisées, titrées.", "description_en": "40 serviced, titled plots." },
+  { "$id": "p3", "branch": "aquaculture", "title_fr": "Ferme piscicole d'Obala", "title_en": "Obala Fish Farm", "location_fr": "Obala — exemple", "location_en": "Obala — example", "description_fr": "6 bassins, production de silures et tilapias.", "description_en": "6 ponds, catfish and tilapia production." },
+  { "$id": "p4", "branch": "opentek", "title_fr": "Plateforme digitale du Groupe", "title_en": "Group digital platform", "location_fr": "Yaoundé — exemple", "location_en": "Yaoundé — example", "description_fr": "Site vitrine et back-office multi-filiales.", "description_en": "Showcase site and multi-branch back-office." }
+]

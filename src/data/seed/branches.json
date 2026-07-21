@@ -1,0 +1,46 @@
+[
+  {
+    "$id": "btp",
+    "code": "01",
+    "color": "amber",
+    "name_fr": "TKR BTP",
+    "name_en": "TKR Construction",
+    "title_fr": "Génie civil & BTP",
+    "title_en": "Civil Engineering & Construction",
+    "description_fr": "Construction de bâtiments résidentiels et professionnels, ouvrages d'art et infrastructures routières — du terrassement à la livraison clé en main.",
+    "description_en": "Construction of residential and commercial buildings, civil works and road infrastructure — from earthworks to turnkey delivery."
+  },
+  {
+    "$id": "immobilier",
+    "code": "02",
+    "color": "brick",
+    "name_fr": "TKR Immobilier",
+    "name_en": "TKR Real Estate",
+    "title_fr": "Location & vente de terrains",
+    "title_en": "Home Rental & Land Sales",
+    "description_fr": "Location de maisons meublées et non meublées, vente de terrains viabilisés dans les zones à forte demande de Yaoundé et sa périphérie.",
+    "description_en": "Rental of furnished and unfurnished houses, sale of serviced plots in high-demand areas around Yaoundé."
+  },
+  {
+    "$id": "aquaculture",
+    "code": "03",
+    "color": "teal",
+    "name_fr": "TKR Aquaculture",
+    "name_en": "TKR Aquaculture",
+    "title_fr": "Élevage & vente de poissons",
+    "title_en": "Fish Farming & Sales",
+    "description_fr": "Production piscicole en étangs et bassins, vente de poissons frais aux particuliers, restaurateurs et marchés de la région.",
+    "description_en": "Fish farming in ponds and tanks, sale of fresh fish to individuals, restaurants and local markets."
+  },
+  {
+    "$id": "opentek",
+    "code": "04",
+    "color": "indigo",
+    "name_fr": "Opentek",
+    "name_en": "Opentek",
+    "title_fr": "IT & Infographie",
+    "title_en": "IT & Graphic Design",
+    "description_fr": "Développement de sites et applications, infrastructure informatique, identité visuelle et supports graphiques pour le Groupe et ses clients.",
+    "description_en": "Website and app development, IT infrastructure, visual identity and graphic design for the Group and external clients."
+  }
+]
