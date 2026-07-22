@@ -1,0 +1,4 @@
+[
+  { "$id": "l1", "title_fr": "Parcelle viabilisée — Nkolbisson", "title_en": "Serviced plot — Nkolbisson", "location_fr": "Nkolbisson, Yaoundé", "location_en": "Nkolbisson, Yaoundé", "surface": "500 m²", "price_fr": "Prix à préciser", "price_en": "Price to be specified", "description_fr": "Titre foncier et détails à compléter par le Groupe TKR.", "description_en": "Land title and details to be provided by Groupe TKR." },
+  { "$id": "l2", "title_fr": "Parcelle viabilisée — Mbankomo", "title_en": "Serviced plot — Mbankomo", "location_fr": "Mbankomo", "location_en": "Mbankomo", "surface": "800 m²", "price_fr": "Prix à préciser", "price_en": "Price to be specified", "description_fr": "Titre foncier et détails à compléter par le Groupe TKR.", "description_en": "Land title and details to be provided by Groupe TKR." }
+]

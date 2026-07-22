@@ -11,8 +11,13 @@ import ProjectsPage from "./pages/public/ProjectsPage";
 import JobsPage from "./pages/public/JobsPage";
 import EventsPage from "./pages/public/EventsPage";
 import BlogPage from "./pages/public/BlogPage";
+import BlogPostPage from "./pages/public/BlogPostPage";
+import RentalsPage from "./pages/public/RentalsPage";
+import LandPage from "./pages/public/LandPage";
+import CommercePage from "./pages/public/CommercePage";
 import ContactPage from "./pages/public/ContactPage";
 import LegalPage from "./pages/public/LegalPage";
+import NotFoundPage from "./pages/public/NotFoundPage";
 
 import LoginPage from "./pages/admin/LoginPage";
 import AdminLayout from "./pages/admin/AdminLayout";
@@ -33,8 +38,13 @@ export default function App() {
               <Route path="/carrieres" element={<JobsPage />} />
               <Route path="/evenements" element={<EventsPage />} />
               <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/:id" element={<BlogPostPage />} />
+              <Route path="/location-maisons" element={<RentalsPage />} />
+              <Route path="/vente-terrains" element={<LandPage />} />
+              <Route path="/commerce-general" element={<CommercePage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/mentions-legales" element={<LegalPage />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Route>
 
             <Route path="/admin/login" element={<LoginPage />} />

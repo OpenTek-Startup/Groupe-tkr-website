@@ -1,5 +1,6 @@
 {
-  "nav": { "home": "Accueil", "about": "À propos", "services": "Nos activités", "projects": "Réalisations", "jobs": "Carrières", "events": "Événements", "blog": "Blog", "contact": "Contact", "legal": "Mentions légales", "cta": "Nous contacter" },
+  "nav": { "home": "Accueil", "about": "À propos", "services": "Nos activités", "projects": "Réalisations", "more": "Voir plus", "contact": "Contact", "legal": "Mentions légales", "cta": "Nous contacter" },
+  "more": { "rentals": "Maisons à louer", "land": "Terrains à vendre", "commerce": "Commerce général", "jobs": "Carrières", "legal": "Mentions légales" },
   "hero": {
     "eyebrow": "Groupe multisectoriel — Yaoundé, Cameroun",
     "title1": "Quatre métiers,",
@@ -16,14 +17,17 @@
     "sig": "— La direction du Groupe TKR" },
   "values": { "eyebrow": "Nos valeurs", "title": "Ce qui guide chaque filiale" },
   "services": { "eyebrow": "Nos activités", "title": "Quatre filières, une organisation", "lead": "Chaque pôle du Groupe TKR répond à un besoin précis, avec ses propres équipes et son propre savoir-faire.", "more": "En savoir plus" },
-  "projects": { "eyebrow": "Réalisations — exemples", "title": "Un aperçu de nos filières en action", "lead": "Illustrations à titre d'exemple — à remplacer par vos projets et photos réels." },
-  "testimonials": { "eyebrow": "Témoignages — exemples", "title": "Ce qu'ils en disent" },
+  "projects": { "eyebrow": "Nos réalisations", "title": "Un aperçu de nos filières en action", "lead": "Une sélection de projets menés par les différentes filières du Groupe." },
+  "testimonials": { "eyebrow": "Témoignages", "title": "Ce qu'ils en disent" },
   "team": { "eyebrow": "L'équipe", "title": "Les personnes derrière le Groupe" },
   "jobs": { "eyebrow": "Carrières", "title": "Rejoindre le Groupe TKR", "lead": "Retrouvez ici les postes actuellement ouverts dans nos différentes filières.", "empty": "Aucune offre publiée pour le moment. Revenez bientôt !", "apply": "Postuler" },
   "events": { "eyebrow": "Événements", "title": "Nos prochains rendez-vous", "empty": "Aucun événement à venir pour le moment." },
   "blog": { "eyebrow": "Actualités", "title": "Blog du Groupe TKR", "empty": "Aucun article publié pour le moment.", "readMore": "Lire l'article" },
-  "contact": { "eyebrow": "Contact", "title": "Un projet à nous confier ?", "lead": "Écrivez-nous, un membre de l'équipe du Groupe TKR vous répondra.", "form_name": "Nom complet", "form_email": "Adresse email", "form_message": "Votre message", "form_submit": "Envoyer le message", "info_title": "Coordonnées" },
+  "contact": { "eyebrow": "Contact", "title": "Un projet à nous confier ?", "lead": "Écrivez-nous, un membre de l'équipe du Groupe TKR vous répondra.", "form_name": "Nom complet", "form_email": "Adresse email", "form_message": "Votre message", "form_submit": "Envoyer le message", "form_sending": "Envoi…", "form_success": "Message envoyé. Nous vous répondrons dans les meilleurs délais.", "form_error_required": "Merci de remplir tous les champs.", "form_error_email": "Merci de saisir une adresse email valide.", "form_prefill_job": "Bonjour, je souhaite postuler au poste « {poste} ». ", "info_title": "Coordonnées" },
+  "rentals": { "title": "Maisons à louer", "lead": "Retrouvez ici les biens actuellement disponibles à la location.", "empty": "Aucun bien à louer publié pour le moment." },
+  "lands": { "title": "Terrains à vendre", "lead": "Parcelles viabilisées et titrées proposées par le Groupe TKR.", "empty": "Aucun terrain publié pour le moment." },
+  "commerce": { "title": "Commerce général", "lead": "Autres produits et services proposés par le Groupe TKR.", "empty": "Aucune offre publiée pour le moment." },
   "legal": { "eyebrow": "Informations légales", "title": "Mentions légales" },
-  "footer": { "tagline": "Le TGV de la Construction — génie civil, immobilier, aquaculture et numérique, depuis Yaoundé.", "branches": "Nos filières", "nav": "Navigation", "newsletter": "Newsletter", "newsletter_lead": "Actualités des chantiers et nouvelles offres du Groupe.", "newsletter_placeholder": "Adresse email", "newsletter_cta": "S'abonner", "rights": "Tous droits réservés.", "madeby": "Site réalisé par" },
+  "footer": { "tagline": "Le TGV de la Construction — génie civil, immobilier, aquaculture et numérique, depuis Yaoundé.", "branches": "Nos filières", "nav": "Navigation", "newsletter": "Newsletter", "newsletter_lead": "Actualités des chantiers et nouvelles offres du Groupe.", "newsletter_placeholder": "Adresse email", "newsletter_cta": "S'abonner", "newsletter_ok": "Merci ! Votre inscription a bien été prise en compte.", "newsletter_invalid": "Merci de saisir une adresse email valide.", "rights": "Tous droits réservés.", "madeby": "Site réalisé par" },
   "common": { "provisional_banner": "Contenu provisoire — en attente des informations définitives du Groupe TKR" }
 }

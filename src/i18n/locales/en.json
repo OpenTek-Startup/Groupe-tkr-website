@@ -1,5 +1,6 @@
 {
-  "nav": { "home": "Home", "about": "About", "services": "What We Do", "projects": "Projects", "jobs": "Careers", "events": "Events", "blog": "Blog", "contact": "Contact", "legal": "Legal Notice", "cta": "Contact Us" },
+  "nav": { "home": "Home", "about": "About", "services": "What We Do", "projects": "Projects", "more": "More", "contact": "Contact", "legal": "Legal Notice", "cta": "Contact Us" },
+  "more": { "rentals": "Houses to Rent", "land": "Land for Sale", "commerce": "General Trade", "jobs": "Careers", "legal": "Legal Notice" },
   "hero": {
     "eyebrow": "Multi-sector Group — Yaoundé, Cameroon",
     "title1": "Four businesses,",
@@ -16,14 +17,17 @@
     "sig": "— Groupe TKR Management" },
   "values": { "eyebrow": "Our values", "title": "What guides every division" },
   "services": { "eyebrow": "What we do", "title": "Four divisions, one organisation", "lead": "Each Groupe TKR division answers a specific need, with its own teams and expertise.", "more": "Learn more" },
-  "projects": { "eyebrow": "Projects — examples", "title": "A glimpse of our divisions at work", "lead": "Illustrative examples — to be replaced with your real projects and photos." },
-  "testimonials": { "eyebrow": "Testimonials — examples", "title": "What people say" },
+  "projects": { "eyebrow": "Our projects", "title": "A glimpse of our divisions at work", "lead": "A selection of projects carried out across the Group's divisions." },
+  "testimonials": { "eyebrow": "Testimonials", "title": "What people say" },
   "team": { "eyebrow": "The team", "title": "The people behind the Group" },
   "jobs": { "eyebrow": "Careers", "title": "Join Groupe TKR", "lead": "Find the positions currently open across our divisions.", "empty": "No openings published yet. Check back soon!", "apply": "Apply" },
   "events": { "eyebrow": "Events", "title": "Upcoming events", "empty": "No upcoming events at the moment." },
   "blog": { "eyebrow": "News", "title": "Groupe TKR Blog", "empty": "No articles published yet.", "readMore": "Read article" },
-  "contact": { "eyebrow": "Contact", "title": "Have a project for us?", "lead": "Write to us, a member of the Groupe TKR team will get back to you.", "form_name": "Full name", "form_email": "Email address", "form_message": "Your message", "form_submit": "Send message", "info_title": "Contact details" },
+  "contact": { "eyebrow": "Contact", "title": "Have a project for us?", "lead": "Write to us, a member of the Groupe TKR team will get back to you.", "form_name": "Full name", "form_email": "Email address", "form_message": "Your message", "form_submit": "Send message", "form_sending": "Sending…", "form_success": "Message sent. We'll get back to you shortly.", "form_error_required": "Please fill in all fields.", "form_error_email": "Please enter a valid email address.", "form_prefill_job": "Hello, I would like to apply for the \"{poste}\" position. ", "info_title": "Contact details" },
+  "rentals": { "title": "Houses to Rent", "lead": "Browse the properties currently available for rent.", "empty": "No rental listed yet." },
+  "lands": { "title": "Land for Sale", "lead": "Serviced, titled plots offered by Groupe TKR.", "empty": "No plot listed yet." },
+  "commerce": { "title": "General Trade", "lead": "Other products and services offered by Groupe TKR.", "empty": "No offer published yet." },
   "legal": { "eyebrow": "Legal information", "title": "Legal Notice" },
-  "footer": { "tagline": "The Construction TGV — civil engineering, real estate, aquaculture and digital, from Yaoundé.", "branches": "Our divisions", "nav": "Navigation", "newsletter": "Newsletter", "newsletter_lead": "Site updates and new offers from the Group.", "newsletter_placeholder": "Email address", "newsletter_cta": "Subscribe", "rights": "All rights reserved.", "madeby": "Site built by" },
+  "footer": { "tagline": "The Construction TGV — civil engineering, real estate, aquaculture and digital, from Yaoundé.", "branches": "Our divisions", "nav": "Navigation", "newsletter": "Newsletter", "newsletter_lead": "Site updates and new offers from the Group.", "newsletter_placeholder": "Email address", "newsletter_cta": "Subscribe", "newsletter_ok": "Thank you! Your subscription has been recorded.", "newsletter_invalid": "Please enter a valid email address.", "rights": "All rights reserved.", "madeby": "Site built by" },
   "common": { "provisional_banner": "Provisional content — pending final information from Groupe TKR" }
 }

@@ -76,7 +76,7 @@ export default function CollectionManagerPage() {
       <div className="eyebrow">Back-office</div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 22 }}>
         <h1 style={{ fontSize: 24 }}>{config.label}</h1>
-        {editing === null && (
+        {editing === null && !config.readOnly && (
           <button className="btn-maroon" onClick={startCreate} disabled={!isAppwriteConfigured}>+ Ajouter</button>
         )}
       </div>
@@ -116,7 +116,9 @@ export default function CollectionManagerPage() {
             <div className="admin-table-row" key={item.$id}>
               <span>{item[config.titleField] || item.$id}</span>
               <span className="row-actions">
-                <button className="btn-ghost" onClick={() => startEdit(item)} disabled={!isAppwriteConfigured}>Modifier</button>
+                {!config.readOnly && (
+                  <button className="btn-ghost" onClick={() => startEdit(item)} disabled={!isAppwriteConfigured}>Modifier</button>
+                )}
                 <button className="btn-ghost" onClick={() => handleDelete(item.$id)} disabled={!isAppwriteConfigured}>Supprimer</button>
               </span>
             </div>

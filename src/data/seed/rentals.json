@@ -1,0 +1,4 @@
+[
+  { "$id": "r1", "title_fr": "Maison 3 chambres — Odza", "title_en": "3-bedroom house — Odza", "location_fr": "Odza, Yaoundé", "location_en": "Odza, Yaoundé", "price_fr": "Loyer à préciser", "price_en": "Rent to be specified", "rooms": 3, "description_fr": "Description et photos à compléter par le Groupe TKR.", "description_en": "Description and photos to be provided by Groupe TKR." },
+  { "$id": "r2", "title_fr": "Villa meublée — Bastos", "title_en": "Furnished villa — Bastos", "location_fr": "Bastos, Yaoundé", "location_en": "Bastos, Yaoundé", "price_fr": "Loyer à préciser", "price_en": "Rent to be specified", "rooms": 4, "description_fr": "Description et photos à compléter par le Groupe TKR.", "description_en": "Description and photos to be provided by Groupe TKR." }
+]

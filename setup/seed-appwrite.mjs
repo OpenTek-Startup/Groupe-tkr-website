@@ -35,12 +35,32 @@ if (!PROJECT_ID || !API_KEY) {
 const client = new Client().setEndpoint(ENDPOINT).setProject(PROJECT_ID).setKey(API_KEY);
 const databases = new Databases(client);
 
-const READ_PUBLIC = [Permission.read(Role.any())];
+// --- Modèle de permissions -------------------------------------------------
+// CONTENT : lisible par tout le monde (site public), modifiable uniquement
+//   par un utilisateur Appwrite authentifié (donc : les comptes admin créés
+//   dans Auth > Users — voir README.md étape 4). Un visiteur anonyme ne peut
+//   jamais créer/modifier/supprimer.
+// LEADS : un visiteur anonyme peut UNIQUEMENT créer un document (soumission
+//   du formulaire de contact ou de la newsletter). Il ne peut ni le relire,
+//   ni le modifier, ni le lire — seul un compte admin authentifié le peut.
+//   Cela protège la confidentialité des messages reçus.
+const CONTENT_PERMS = [
+  Permission.read(Role.any()),
+  Permission.create(Role.users()),
+  Permission.update(Role.users()),
+  Permission.delete(Role.users()),
+];
+const LEADS_PERMS = [
+  Permission.create(Role.any()),
+  Permission.read(Role.users()),
+  Permission.update(Role.users()),
+  Permission.delete(Role.users()),
+];
 
 // Définition des collections : id, nom affiché, et attributs Appwrite.
 const COLLECTIONS = [
   {
-    id: "branches", name: "Branches",
+    id: "branches", name: "Branches", perms: CONTENT_PERMS,
     attrs: [
       ["code", "string", 8], ["color", "string", 20],
       ["name_fr", "string", 100], ["name_en", "string", 100],
@@ -50,7 +70,7 @@ const COLLECTIONS = [
     seed: "branches.json",
   },
   {
-    id: "values", name: "Valeurs",
+    id: "values", name: "Valeurs", perms: CONTENT_PERMS,
     attrs: [
       ["order", "integer"],
       ["title_fr", "string", 100], ["title_en", "string", 100],
@@ -59,7 +79,7 @@ const COLLECTIONS = [
     seed: "values.json",
   },
   {
-    id: "services", name: "Services",
+    id: "services", name: "Services", perms: CONTENT_PERMS,
     attrs: [
       ["branch", "string", 40],
       ["title_fr", "string", 150], ["title_en", "string", 150],
@@ -68,7 +88,7 @@ const COLLECTIONS = [
     seed: "services.json",
   },
   {
-    id: "projects", name: "Réalisations",
+    id: "projects", name: "Réalisations", perms: CONTENT_PERMS,
     attrs: [
       ["branch", "string", 40],
       ["title_fr", "string", 150], ["title_en", "string", 150],
@@ -79,7 +99,7 @@ const COLLECTIONS = [
     seed: "projects.json",
   },
   {
-    id: "team", name: "Équipe",
+    id: "team", name: "Équipe", perms: CONTENT_PERMS,
     attrs: [
       ["name", "string", 150],
       ["role_fr", "string", 150], ["role_en", "string", 150],
@@ -89,7 +109,7 @@ const COLLECTIONS = [
     seed: "team.json",
   },
   {
-    id: "testimonials", name: "Témoignages",
+    id: "testimonials", name: "Témoignages", perms: CONTENT_PERMS,
     attrs: [
       ["name", "string", 150],
       ["role_fr", "string", 150], ["role_en", "string", 150],
@@ -98,7 +118,7 @@ const COLLECTIONS = [
     seed: "testimonials.json",
   },
   {
-    id: "jobs", name: "Offres d'emploi",
+    id: "jobs", name: "Offres d'emploi", perms: CONTENT_PERMS,
     attrs: [
       ["title_fr", "string", 150], ["title_en", "string", 150],
       ["branch", "string", 40],
@@ -109,7 +129,7 @@ const COLLECTIONS = [
     seed: "jobs.json",
   },
   {
-    id: "events", name: "Événements",
+    id: "events", name: "Événements", perms: CONTENT_PERMS,
     attrs: [
       ["title_fr", "string", 150], ["title_en", "string", 150],
       ["date", "string", 20],
@@ -119,7 +139,7 @@ const COLLECTIONS = [
     seed: "events.json",
   },
   {
-    id: "blog", name: "Blog",
+    id: "blog", name: "Blog", perms: CONTENT_PERMS,
     attrs: [
       ["title_fr", "string", 200], ["title_en", "string", 200],
       ["date", "string", 20], ["author", "string", 100],
@@ -127,6 +147,56 @@ const COLLECTIONS = [
       ["content_fr", "string", 5000], ["content_en", "string", 5000],
     ],
     seed: "blog.json",
+  },
+  {
+    id: "rentals", name: "Maisons à louer", perms: CONTENT_PERMS,
+    attrs: [
+      ["title_fr", "string", 150], ["title_en", "string", 150],
+      ["location_fr", "string", 150], ["location_en", "string", 150],
+      ["rooms", "integer"],
+      ["price_fr", "string", 100], ["price_en", "string", 100],
+      ["description_fr", "string", 1000], ["description_en", "string", 1000],
+      ["image", "string", 500],
+    ],
+    seed: "rentals.json",
+  },
+  {
+    id: "lands", name: "Terrains à vendre", perms: CONTENT_PERMS,
+    attrs: [
+      ["title_fr", "string", 150], ["title_en", "string", 150],
+      ["location_fr", "string", 150], ["location_en", "string", 150],
+      ["surface", "string", 40],
+      ["price_fr", "string", 100], ["price_en", "string", 100],
+      ["description_fr", "string", 1000], ["description_en", "string", 1000],
+      ["image", "string", 500],
+    ],
+    seed: "lands.json",
+  },
+  {
+    id: "commerce", name: "Commerce général", perms: CONTENT_PERMS,
+    attrs: [
+      ["title_fr", "string", 150], ["title_en", "string", 150],
+      ["description_fr", "string", 1000], ["description_en", "string", 1000],
+    ],
+    seed: "commerce.json",
+  },
+  {
+    id: "newsletter", name: "Abonnés newsletter", perms: LEADS_PERMS,
+    attrs: [
+      ["email", "string", 200],
+      ["date", "string", 30],
+    ],
+    seed: "newsletter.json",
+  },
+  {
+    id: "messages", name: "Messages reçus", perms: LEADS_PERMS,
+    attrs: [
+      ["name", "string", 150],
+      ["email", "string", 200],
+      ["message", "string", 2000],
+      ["date", "string", 30],
+    ],
+    seed: "messages.json",
   },
 ];
 
@@ -145,10 +215,15 @@ async function ensureDatabase() {
 async function ensureCollection(col) {
   try {
     await databases.getCollection(DATABASE_ID, col.id);
-    console.log(`  ✓ Collection "${col.id}" déjà présente.`);
+    console.log(`  ✓ Collection "${col.id}" déjà présente — mise à jour des permissions…`);
+    await databases.updateCollection(DATABASE_ID, col.id, col.name, col.perms, false);
     return;
-  } catch {
-    await databases.createCollection(DATABASE_ID, col.id, col.name, READ_PUBLIC, false);
+  } catch (e) {
+    if (!String(e.message).includes("could not be found")) {
+      console.warn(`    (impossible de mettre à jour les permissions : ${e.message})`);
+      return;
+    }
+    await databases.createCollection(DATABASE_ID, col.id, col.name, col.perms, false);
     console.log(`  ✓ Collection "${col.id}" créée.`);
   }
 

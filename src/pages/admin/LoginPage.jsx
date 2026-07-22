@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../lib/AuthContext";
+import logo from "../../assets/logo-tkr.png";
 
 export default function LoginPage() {
   const { login, isAppwriteConfigured } = useAuth();
@@ -27,6 +28,7 @@ export default function LoginPage() {
   return (
     <div className="admin-login">
       <form className="card" onSubmit={handleSubmit}>
+        <img src={logo} alt="Groupe TKR" className="login-logo" />
         <div className="eyebrow">Back-office</div>
         <h1 style={{ fontSize: 22, marginBottom: 20 }}>Groupe TKR — Administration</h1>
 
@@ -51,6 +53,7 @@ export default function LoginPage() {
       <style>{`
         .admin-login{min-height:100vh; display:flex; align-items:center; justify-content:center; background:var(--charcoal); padding:20px;}
         .admin-login .card{width:100%; max-width:380px; padding:34px; background:var(--paper);}
+        .login-logo{width:56px; height:56px; object-fit:contain; margin-bottom:16px;}
         .field-label{display:block; font-family:'IBM Plex Mono'; font-size:11px; text-transform:uppercase; color:#8b8377; margin:14px 0 6px;}
         .field-input{width:100%; border:1px solid var(--line-strong); background:var(--concrete); padding:11px 12px; font-size:14px; font-family:inherit;}
       `}</style>

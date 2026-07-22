@@ -12,7 +12,7 @@ export function BranchCard({ branch }) {
       <span className="code" style={{ color }}>{branch.code} / {field(branch, "name")}</span>
       <h3>{field(branch, "title")}</h3>
       <p>{field(branch, "description")}</p>
-      <Link to="/activites" className="more" style={{ color }}>{t("services.more")} →</Link>
+      <Link to={`/activites#${branch.$id}`} className="more" style={{ color }}>{t("services.more")} →</Link>
       <style>{`
         .branch-card{background:#242019; border:1px solid rgba(248,245,239,.1); padding:32px; position:relative; color:var(--paper); transition:transform .25s ease, border-color .25s ease;}
         .branch-card:hover{transform:translateY(-4px); border-color:rgba(248,245,239,.28);}
@@ -116,6 +116,72 @@ export function TeamCard({ member }) {
   );
 }
 
+export function RentalCard({ item }) {
+  const { field } = useI18n();
+  return (
+    <div className="listing-card">
+      <div className="listing-thumb" style={{ background: "linear-gradient(160deg, #C4536F, #2a2419)" }} />
+      <div className="listing-body">
+        <h4>{field(item, "title")}</h4>
+        <p className="loc">{field(item, "location")}</p>
+        <p>{field(item, "description")}</p>
+        <div className="listing-meta">
+          <span>{item.rooms ? `${item.rooms} pièces` : ""}</span>
+          <span className="price">{field(item, "price")}</span>
+        </div>
+      </div>
+      <style>{`
+        .listing-card{background:var(--paper); border:1px solid var(--line);}
+        .listing-thumb{aspect-ratio:16/10;}
+        .listing-body{padding:18px 18px 20px;}
+        .listing-body h4{font-size:16px; margin-bottom:6px;}
+        .listing-body .loc{font-family:'IBM Plex Mono'; font-size:10.5px; color:#8b8377; text-transform:uppercase; margin-bottom:10px;}
+        .listing-body p{font-size:13.5px; color:#544D45;}
+        .listing-meta{display:flex; justify-content:space-between; margin-top:14px; padding-top:14px; border-top:1px solid var(--line); font-size:13px;}
+        .listing-meta .price{font-weight:600; color:var(--maroon);}
+      `}</style>
+    </div>
+  );
+}
+
+export function LandCard({ item }) {
+  const { field } = useI18n();
+  return (
+    <div className="listing-card">
+      <div className="listing-thumb" style={{ background: "linear-gradient(160deg, #DE9F3C, #2a2419)" }} />
+      <div className="listing-body">
+        <h4>{field(item, "title")}</h4>
+        <p className="loc">{field(item, "location")}</p>
+        <p>{field(item, "description")}</p>
+        <div className="listing-meta">
+          <span>{item.surface}</span>
+          <span className="price">{field(item, "price")}</span>
+        </div>
+      </div>
+      <style>{`
+        .listing-card{background:var(--paper); border:1px solid var(--line);}
+        .listing-thumb{aspect-ratio:16/10;}
+        .listing-body{padding:18px 18px 20px;}
+        .listing-body h4{font-size:16px; margin-bottom:6px;}
+        .listing-body .loc{font-family:'IBM Plex Mono'; font-size:10.5px; color:#8b8377; text-transform:uppercase; margin-bottom:10px;}
+        .listing-body p{font-size:13.5px; color:#544D45;}
+        .listing-meta{display:flex; justify-content:space-between; margin-top:14px; padding-top:14px; border-top:1px solid var(--line); font-size:13px;}
+        .listing-meta .price{font-weight:600; color:var(--maroon);}
+      `}</style>
+    </div>
+  );
+}
+
+export function CommerceCard({ item }) {
+  const { field } = useI18n();
+  return (
+    <div className="card" style={{ padding: 24 }}>
+      <h4 style={{ fontSize: 15.5, marginBottom: 8, fontFamily: "Oswald", textTransform: "uppercase" }}>{field(item, "title")}</h4>
+      <p style={{ fontSize: 13.5, color: "#544D45" }}>{field(item, "description")}</p>
+    </div>
+  );
+}
+
 export function JobCard({ job }) {
   const { field, t } = useI18n();
   return (
@@ -126,7 +192,7 @@ export function JobCard({ job }) {
         <p className="loc">{field(job, "location")}</p>
         <p>{field(job, "description")}</p>
       </div>
-      <Link to="/contact" className="btn-ghost">{t("jobs.apply")}</Link>
+      <Link to={`/contact?sujet=${encodeURIComponent(field(job, "title"))}`} className="btn-ghost">{t("jobs.apply")}</Link>
       <style>{`
         .job-card{background:var(--paper); border:1px solid var(--line); padding:26px; display:flex; flex-direction:column; justify-content:space-between; gap:18px;}
         .job-card h4{font-size:17px; margin:12px 0 4px;}
@@ -172,7 +238,7 @@ export function BlogCard({ post }) {
       <div className="meta mono">{d.toLocaleDateString()} — {post.author}</div>
       <h4>{field(post, "title")}</h4>
       <p>{field(post, "excerpt")}</p>
-      <Link to="/blog" className="more">{t("blog.readMore")} →</Link>
+      <Link to={`/blog/${post.$id}`} className="more">{t("blog.readMore")} →</Link>
       <style>{`
         .blog-card{background:var(--paper); border:1px solid var(--line); padding:26px;}
         .blog-card .meta{font-size:11px; color:#8b8377; margin-bottom:10px;}

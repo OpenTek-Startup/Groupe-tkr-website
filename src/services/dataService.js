@@ -10,6 +10,11 @@ import testimonialsSeed from "../data/seed/testimonials.json";
 import jobsSeed from "../data/seed/jobs.json";
 import eventsSeed from "../data/seed/events.json";
 import blogSeed from "../data/seed/blog.json";
+import rentalsSeed from "../data/seed/rentals.json";
+import landsSeed from "../data/seed/lands.json";
+import commerceSeed from "../data/seed/commerce.json";
+import newsletterSeed from "../data/seed/newsletter.json";
+import messagesSeed from "../data/seed/messages.json";
 
 const SEED = {
   branches: branchesSeed,
@@ -21,6 +26,11 @@ const SEED = {
   jobs: jobsSeed,
   events: eventsSeed,
   blog: blogSeed,
+  rentals: rentalsSeed,
+  lands: landsSeed,
+  commerce: commerceSeed,
+  newsletter: newsletterSeed,
+  messages: messagesSeed,
 };
 
 /**

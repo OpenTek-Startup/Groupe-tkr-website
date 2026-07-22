@@ -22,7 +22,7 @@ export default function ServicesPage() {
       <section className="wrap" style={{ padding: "72px 0 96px" }}>
         <ProvisionalBadge source={services.source} />
         {branches.items.map((b) => (
-          <div key={b.$id} style={{ marginBottom: 56 }}>
+          <div key={b.$id} id={b.$id} style={{ marginBottom: 56, scrollMarginTop: 96 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20 }}>
               <span style={{ width: 10, height: 10, borderRadius: "50%", background: BRANCH_COLORS[b.$id] }} />
               <h3 style={{ fontSize: 22 }}>{field(b, "title")}</h3>

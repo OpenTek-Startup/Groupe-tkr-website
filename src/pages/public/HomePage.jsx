@@ -3,6 +3,7 @@ import { useI18n } from "../../i18n/I18nContext";
 import { useCollection } from "../../hooks/useCollection";
 import { SectionHead, ProvisionalBadge } from "../../components/ui/UiBits";
 import { BranchCard, ValueCard, ProjectCard, TestimonialCard } from "../../components/cards/Cards";
+import logo from "../../assets/logo-tkr.png";
 
 export default function HomePage() {
   const { t } = useI18n();
@@ -35,14 +36,8 @@ export default function HomePage() {
           <div className="hero-visual bp-frame">
             <span className="bp-tr" /><span className="bp-br" />
             <div className="frame-fill">
-              <svg viewBox="0 0 300 375" style={{ position: "absolute", inset: 0, opacity: 0.5 }}>
-                <polyline points="20,180 150,60 280,180" stroke="#DE9F3C" strokeWidth="2" fill="none" />
-                <line x1="60" y1="180" x2="60" y2="330" stroke="#DE9F3C" strokeWidth="1" />
-                <line x1="240" y1="180" x2="240" y2="330" stroke="#DE9F3C" strokeWidth="1" />
-                <rect x="130" y="230" width="40" height="100" fill="none" stroke="#C4BCAD" strokeWidth="1" />
-                <line x1="20" y1="330" x2="280" y2="330" stroke="#C4BCAD" strokeWidth="1" strokeDasharray="4 4" />
-              </svg>
-              <div className="caption">FIG. 01 — Coupe schématique — chantier type<br />Groupe TKR / Division BTP</div>
+              <img src={logo} alt="Groupe TKR — Le TGV de la Construction" className="hero-logo" />
+              <div className="caption">GROUPE TKR<br />Le TGV de la Construction</div>
             </div>
           </div>
         </div>
@@ -136,8 +131,9 @@ export default function HomePage() {
         .stats .lbl{font-size:11px; color:#B9B2A3; text-transform:uppercase; margin-top:2px;}
         .hero-visual{aspect-ratio:4/5; position:relative; border:1px solid rgba(248,245,239,.2);}
         .hero-visual .bp-tr, .hero-visual::before, .hero-visual::after, .hero-visual .bp-br{border-color:rgba(248,245,239,.55);}
-        .frame-fill{position:absolute; inset:14px; background:linear-gradient(160deg, rgba(222,159,60,.18), transparent 55%), linear-gradient(340deg, rgba(110,18,32,.35), transparent 55%), #2A2521; display:flex; align-items:flex-end; padding:20px;}
-        .caption{font-family:'IBM Plex Mono'; font-size:11px; color:#C9C2B4;}
+        .frame-fill{position:absolute; inset:14px; background:linear-gradient(160deg, rgba(222,159,60,.18), transparent 55%), linear-gradient(340deg, rgba(110,18,32,.35), transparent 55%), #2A2521; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:24px; padding:32px; text-align:center;}
+        .hero-logo{width:62%; max-width:220px; filter:drop-shadow(0 8px 20px rgba(0,0,0,.35));}
+        .caption{font-family:'IBM Plex Mono'; font-size:12px; color:#C9C2B4; letter-spacing:.04em;}
         .strip{background:var(--maroon); color:var(--paper); overflow:hidden; white-space:nowrap; padding:10px 0; font-family:'IBM Plex Mono'; font-size:12px;}
         .strip span{display:inline-block; padding-right:56px;}
         .about-section{padding:88px 0 36px;}

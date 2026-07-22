@@ -28,6 +28,11 @@ export const COLLECTIONS = {
   jobs: import.meta.env.VITE_COL_JOBS || "jobs",
   events: import.meta.env.VITE_COL_EVENTS || "events",
   blog: import.meta.env.VITE_COL_BLOG || "blog",
+  rentals: import.meta.env.VITE_COL_RENTALS || "rentals",
+  lands: import.meta.env.VITE_COL_LANDS || "lands",
+  commerce: import.meta.env.VITE_COL_COMMERCE || "commerce",
+  newsletter: import.meta.env.VITE_COL_NEWSLETTER || "newsletter",
+  messages: import.meta.env.VITE_COL_MESSAGES || "messages",
 };
 
 export default client;
