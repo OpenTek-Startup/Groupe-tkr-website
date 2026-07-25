@@ -2,14 +2,14 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "../../lib/AuthContext";
 
 export default function ProtectedRoute({ children }) {
-  const { user, loading, isAppwriteConfigured } = useAuth();
+  const { user, loading } = useAuth();
 
   if (loading) return <p style={{ padding: 40 }}>Chargement…</p>;
 
-  // Tant qu'Appwrite n'est pas configuré, on laisse passer en lecture seule
-  // pour permettre de visualiser la structure du back-office.
-  if (!isAppwriteConfigured) return children;
-
+  // L'accès au back-office passe toujours par la page de connexion, qu'Appwrite
+  // soit configuré ou non — tant qu'aucun compte n'existe, personne ne peut
+  // entrer (voir LoginPage.jsx : le formulaire explique pourquoi la connexion
+  // est momentanément indisponible plutôt que de laisser passer sans compte).
   if (!user) return <Navigate to="/admin/login" replace />;
 
   return children;

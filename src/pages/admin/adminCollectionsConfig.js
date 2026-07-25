@@ -126,6 +126,7 @@ export const ADMIN_COLLECTIONS = [
       { name: "excerpt_en", label: "Résumé (EN)", type: "textarea" },
       { name: "content_fr", label: "Contenu complet (FR)", type: "textarea" },
       { name: "content_en", label: "Contenu complet (EN)", type: "textarea" },
+      { name: "coverImage", label: "Image de couverture (URL)", type: "text" },
     ],
   },
   {
@@ -141,7 +142,7 @@ export const ADMIN_COLLECTIONS = [
       { name: "price_en", label: "Loyer (EN)", type: "text" },
       { name: "description_fr", label: "Description (FR)", type: "textarea" },
       { name: "description_en", label: "Description (EN)", type: "textarea" },
-      { name: "image", label: "URL image", type: "text" },
+      { name: "images", label: "Photos", type: "imagelist" },
     ],
   },
   {
@@ -157,7 +158,7 @@ export const ADMIN_COLLECTIONS = [
       { name: "price_en", label: "Prix (EN)", type: "text" },
       { name: "description_fr", label: "Description (FR)", type: "textarea" },
       { name: "description_en", label: "Description (EN)", type: "textarea" },
-      { name: "image", label: "URL image", type: "text" },
+      { name: "images", label: "Photos", type: "imagelist" },
     ],
   },
   {
@@ -168,6 +169,7 @@ export const ADMIN_COLLECTIONS = [
       { name: "title_en", label: "Titre (EN)", type: "text" },
       { name: "description_fr", label: "Description (FR)", type: "textarea" },
       { name: "description_en", label: "Description (EN)", type: "textarea" },
+      { name: "images", label: "Photos (max 3 conseillées)", type: "imagelist" },
     ],
   },
   {
@@ -188,6 +190,19 @@ export const ADMIN_COLLECTIONS = [
       { name: "email", label: "Email", type: "text" },
       { name: "message", label: "Message", type: "textarea" },
       { name: "date", label: "Date", type: "text" },
+    ],
+  },
+  {
+    key: "settings", label: "Coordonnées & réseaux sociaux",
+    titleField: "contactEmail",
+    singleton: true,
+    fields: [
+      { name: "contactEmail", label: "Email de contact", type: "text" },
+      { name: "contactPhone", label: "Téléphone de contact", type: "text" },
+      { name: "address", label: "Adresse", type: "text" },
+      { name: "facebookUrl", label: "URL Facebook", type: "text" },
+      { name: "linkedinUrl", label: "URL LinkedIn", type: "text" },
+      { name: "twitterUrl", label: "URL X / Twitter", type: "text" },
     ],
   },
 ];

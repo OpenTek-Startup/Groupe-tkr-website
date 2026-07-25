@@ -29,7 +29,7 @@ export default function HomePage() {
             <div className="stats">
               <div><div className="num">12+</div><div className="lbl">{t("hero.stat1")}</div></div>
               <div><div className="num">80+</div><div className="lbl">{t("hero.stat2")}</div></div>
-              <div><div className="num">04</div><div className="lbl">{t("hero.stat3")}</div></div>
+              <div><div className="num">{String(branches.items.length || 4).padStart(2, "0")}</div><div className="lbl">{t("hero.stat3")}</div></div>
               <div><div className="num">200+</div><div className="lbl">{t("hero.stat4")}</div></div>
             </div>
           </div>
@@ -44,8 +44,11 @@ export default function HomePage() {
       </section>
 
       <div className="strip">
-        <span>★ GÉNIE CIVIL & BTP</span><span>★ LOCATION DE MAISONS</span><span>★ VENTE DE TERRAINS</span><span>★ ÉLEVAGE & VENTE DE POISSONS</span><span>★ IT & INFOGRAPHIE — OPENTEK</span>
-        <span>★ GÉNIE CIVIL & BTP</span><span>★ LOCATION DE MAISONS</span><span>★ VENTE DE TERRAINS</span><span>★ ÉLEVAGE & VENTE DE POISSONS</span><span>★ IT & INFOGRAPHIE — OPENTEK</span>
+        <div className="strip-track">
+          {[...branches.items, ...branches.items].map((b, i) => (
+            <span key={i}>★ {b.title_fr?.toUpperCase() || b.name_fr?.toUpperCase()}</span>
+          ))}
+        </div>
       </div>
 
       <section className="about-section">
@@ -131,11 +134,14 @@ export default function HomePage() {
         .stats .lbl{font-size:11px; color:#B9B2A3; text-transform:uppercase; margin-top:2px;}
         .hero-visual{aspect-ratio:4/5; position:relative; border:1px solid rgba(248,245,239,.2);}
         .hero-visual .bp-tr, .hero-visual::before, .hero-visual::after, .hero-visual .bp-br{border-color:rgba(248,245,239,.55);}
-        .frame-fill{position:absolute; inset:14px; background:linear-gradient(160deg, rgba(222,159,60,.18), transparent 55%), linear-gradient(340deg, rgba(110,18,32,.35), transparent 55%), #2A2521; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:24px; padding:32px; text-align:center;}
-        .hero-logo{width:62%; max-width:220px; filter:drop-shadow(0 8px 20px rgba(0,0,0,.35));}
-        .caption{font-family:'IBM Plex Mono'; font-size:12px; color:#C9C2B4; letter-spacing:.04em;}
-        .strip{background:var(--maroon); color:var(--paper); overflow:hidden; white-space:nowrap; padding:10px 0; font-family:'IBM Plex Mono'; font-size:12px;}
-        .strip span{display:inline-block; padding-right:56px;}
+        .frame-fill{position:absolute; inset:14px; background:var(--paper); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:24px; padding:32px; text-align:center;}
+        .hero-logo{width:62%; max-width:220px; filter:drop-shadow(0 4px 10px rgba(0,0,0,.15));}
+        .caption{font-family:'IBM Plex Mono'; font-size:12px; color:var(--maroon); letter-spacing:.04em; font-weight:600; line-height:1.6;}
+        .strip{background:var(--maroon); overflow:hidden; white-space:nowrap; padding:10px 0;}
+        .strip-track{display:inline-flex; width:max-content; animation:tkr-scroll 26s linear infinite;}
+        .strip span{display:inline-block; padding-right:56px; color:var(--paper); font-family:'IBM Plex Mono'; font-size:12px;}
+        @keyframes tkr-scroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+        @media (prefers-reduced-motion: reduce){ .strip-track{animation:none;} }
         .about-section{padding:88px 0 36px;}
         .about-grid{display:grid; grid-template-columns:.9fr 1.1fr; gap:56px;}
         .about-copy p{color:#443E38; margin-bottom:14px; font-size:15px; max-width:52ch;}

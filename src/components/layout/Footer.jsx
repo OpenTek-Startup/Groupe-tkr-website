@@ -4,14 +4,22 @@ import { useI18n } from "../../i18n/I18nContext";
 import branches from "../../data/seed/branches.json";
 import { createItem } from "../../services/dataService";
 import { saveLocalFallback } from "../../lib/localFallback";
+import { useSettings } from "../../hooks/useSettings";
 import logo from "../../assets/logo-tkr.png";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function Footer() {
   const { t, field } = useI18n();
+  const { settings } = useSettings();
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState(null); // null | "sending" | "ok" | "error"
+
+  const socials = [
+    { key: "linkedin", label: "LinkedIn", url: settings?.linkedinUrl },
+    { key: "facebook", label: "Facebook", url: settings?.facebookUrl },
+    { key: "twitter", label: "X", url: settings?.twitterUrl },
+  ];
 
   async function handleNewsletter(e) {
     e.preventDefault();
@@ -44,9 +52,13 @@ export default function Footer() {
             </Link>
             <p>{t("footer.tagline")}</p>
             <div className="foot-social">
-              <button type="button" title="LinkedIn — lien à venir" aria-label="LinkedIn">in</button>
-              <button type="button" title="Facebook — lien à venir" aria-label="Facebook">f</button>
-              <button type="button" title="X — lien à venir" aria-label="X">X</button>
+              {socials.map((s) => (
+                s.url ? (
+                  <a key={s.key} href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.label}>{s.label === "X" ? "X" : s.label.slice(0, 2).toLowerCase()}</a>
+                ) : (
+                  <button key={s.key} type="button" title={`${s.label} — lien à venir`} aria-label={s.label}>{s.label === "X" ? "X" : s.label.slice(0, 2).toLowerCase()}</button>
+                )
+              ))}
             </div>
           </div>
           <div>
@@ -100,8 +112,8 @@ export default function Footer() {
         .foot-logo span{font-family:'Oswald'; color:var(--paper); font-size:17px; letter-spacing:.03em;}
         .foot-brand p{font-size:13px; max-width:32ch; margin-bottom:18px;}
         .foot-social{display:flex; gap:10px;}
-        .foot-social button{width:32px; height:32px; border:1px solid rgba(248,245,239,.25); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; background:none; color:#C4BCAD; font-family:inherit; cursor:pointer;}
-        .foot-social button:hover{border-color:rgba(248,245,239,.5); color:var(--paper);}
+        .foot-social button, .foot-social a{width:32px; height:32px; border:1px solid rgba(248,245,239,.25); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; background:none; color:#C4BCAD; font-family:inherit; cursor:pointer; text-decoration:none;}
+        .foot-social button:hover, .foot-social a:hover{border-color:rgba(248,245,239,.5); color:var(--paper);}
         .tkr-footer h5{font-family:'IBM Plex Mono'; color:var(--paper); font-size:11px; letter-spacing:.08em; text-transform:uppercase; margin-bottom:16px;}
         .tkr-footer ul{list-style:none;}
         .tkr-footer ul li{margin-bottom:9px; font-size:13.5px;}

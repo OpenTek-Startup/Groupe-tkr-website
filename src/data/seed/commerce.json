@@ -1,4 +1,4 @@
 [
-  { "$id": "c1", "title_fr": "Matériaux de construction", "title_en": "Building materials", "description_fr": "Vente de matériaux et fournitures pour chantiers. Catalogue à compléter par le Groupe TKR.", "description_en": "Sale of construction materials and supplies. Catalogue to be provided by Groupe TKR." },
-  { "$id": "c2", "title_fr": "Produits agroalimentaires", "title_en": "Agri-food products", "description_fr": "Distribution de produits issus des filières du Groupe. Catalogue à compléter par le Groupe TKR.", "description_en": "Distribution of products from the Group's divisions. Catalogue to be provided by Groupe TKR." }
+  { "$id": "c1", "title_fr": "Matériaux de construction", "title_en": "Building materials", "description_fr": "Vente de matériaux et fournitures pour chantiers. Catalogue à compléter par le Groupe TKR.", "description_en": "Sale of construction materials and supplies. Catalogue to be provided by Groupe TKR.", "images": "" },
+  { "$id": "c2", "title_fr": "Produits agroalimentaires", "title_en": "Agri-food products", "description_fr": "Distribution de produits issus des filières du Groupe. Catalogue à compléter par le Groupe TKR.", "description_en": "Distribution of products from the Group's divisions. Catalogue to be provided by Groupe TKR.", "images": "" }
 ]

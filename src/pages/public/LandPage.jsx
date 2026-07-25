@@ -1,11 +1,14 @@
+import { useState } from "react";
 import { useI18n } from "../../i18n/I18nContext";
 import { useCollection } from "../../hooks/useCollection";
 import { ProvisionalBadge, EmptyState } from "../../components/ui/UiBits";
 import { LandCard } from "../../components/cards/Cards";
+import ListingModal from "../../components/modals/ListingModal";
 
 export default function LandPage() {
   const { t } = useI18n();
   const lands = useCollection("lands");
+  const [selected, setSelected] = useState(null);
 
   return (
     <>
@@ -22,10 +25,11 @@ export default function LandPage() {
           <EmptyState>{t("lands.empty")}</EmptyState>
         ) : (
           <div className="grid-3">
-            {lands.items.map((l) => <LandCard key={l.$id} item={l} />)}
+            {lands.items.map((l) => <LandCard key={l.$id} item={l} onOpen={setSelected} />)}
           </div>
         )}
       </section>
+      <ListingModal item={selected} kind="land" open={!!selected} onClose={() => setSelected(null)} />
     </>
   );
 }

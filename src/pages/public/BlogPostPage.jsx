@@ -52,6 +52,9 @@ export default function BlogPostPage() {
       </section>
       <section className="wrap" style={{ padding: "72px 0 96px", maxWidth: 760 }}>
         <ProvisionalBadge source={state.source} />
+        {post.coverImage && (
+          <img src={post.coverImage} alt="" style={{ width: "100%", aspectRatio: "16/9", objectFit: "cover", marginBottom: 32 }} />
+        )}
         <div style={{ fontSize: 15.5, color: "#443E38", whiteSpace: "pre-wrap", lineHeight: 1.75 }}>{content}</div>
         <div style={{ marginTop: 40 }}>
           <Link to="/blog" className="btn-ghost">← {t("blog.title")}</Link>

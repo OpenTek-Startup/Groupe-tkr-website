@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../lib/AuthContext";
+import { useI18n } from "../../i18n/I18nContext";
 import logo from "../../assets/logo-tkr.png";
 
 export default function LoginPage() {
   const { login, isAppwriteConfigured } = useAuth();
+  const { lang, setLang } = useI18n();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,6 +29,11 @@ export default function LoginPage() {
 
   return (
     <div className="admin-login">
+      <div className="admin-login-lang">
+        <span className={lang === "fr" ? "active" : ""} onClick={() => setLang("fr")}>FR</span>
+        <span>/</span>
+        <span className={lang === "en" ? "active" : ""} onClick={() => setLang("en")}>EN</span>
+      </div>
       <form className="card" onSubmit={handleSubmit}>
         <img src={logo} alt="Groupe TKR" className="login-logo" />
         <div className="eyebrow">Back-office</div>
@@ -51,7 +58,10 @@ export default function LoginPage() {
       </form>
 
       <style>{`
-        .admin-login{min-height:100vh; display:flex; align-items:center; justify-content:center; background:var(--charcoal); padding:20px;}
+        .admin-login{min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; background:var(--charcoal); padding:20px; gap:18px;}
+        .admin-login-lang{font-family:'IBM Plex Mono'; font-size:12px; display:flex; gap:6px; color:#C4BCAD; cursor:pointer;}
+        .admin-login-lang span{opacity:.5;}
+        .admin-login-lang span.active{opacity:1; font-weight:600; color:var(--amber);}
         .admin-login .card{width:100%; max-width:380px; padding:34px; background:var(--paper);}
         .login-logo{width:56px; height:56px; object-fit:contain; margin-bottom:16px;}
         .field-label{display:block; font-family:'IBM Plex Mono'; font-size:11px; text-transform:uppercase; color:#8b8377; margin:14px 0 6px;}

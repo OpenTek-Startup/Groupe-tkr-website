@@ -14,6 +14,29 @@ Dès que le projet Appwrite est créé et renseigné dans `.env.local`, le site
 et le back-office basculent automatiquement sur les données réelles — aucun
 changement de code nécessaire.
 
+> **Important — accès au back-office :** `/admin` exige toujours une
+> connexion réelle (compte Appwrite). Tant qu'aucun utilisateur n'a été créé
+> dans **Auth > Users** de la console Appwrite (voir section 4), **personne
+> ne peut se connecter** — le formulaire l'indique clairement. C'est
+> volontaire : un back-office ne doit jamais être accessible sans compte,
+> même en phase de démonstration.
+>
+> **Configuration Appwrite :** le projet (`6a5b3134001064862b43`) et la base
+> de données (`6a5b328400308612967e`) sont déjà pris en compte par défaut
+> dans le code — voir [`APPWRITE_SCHEMA.md`](./APPWRITE_SCHEMA.md) pour le
+> détail complet des collections à créer (ou lancez directement
+> `npm run setup:appwrite`, qui s'en charge automatiquement). **N'oubliez
+> pas de déclarer votre domaine dans Appwrite (Overview > Add platform >
+> Web app)** — voir section 2 étape 5 : sans cela, le navigateur bloque les
+> requêtes vers Appwrite (erreur CORS) et le site continue d'afficher le
+> contenu provisoire même une fois les collections créées.
+>
+> **Images (Cloudinary) :** les champs « Photos » (biens à louer, terrains,
+> commerce général) attendent simplement des URLs d'images. Cloudinary (ou
+> tout autre hébergeur d'images) pourra donc être branché plus tard sans
+> aucun changement de code : il suffira de coller les URLs Cloudinary dans
+> ces champs depuis le back-office.
+
 ## 1. Lancer le site en local
 
 ```bash
@@ -34,8 +57,20 @@ Le site est alors disponible sur http://localhost:5173.
    - `VITE_APPWRITE_PROJECT_ID` (visible dans Overview du projet)
    - `APPWRITE_API_KEY` (la clé créée à l'étape 3)
    - laisser `VITE_APPWRITE_ENDPOINT` tel quel si vous utilisez Appwrite Cloud
+5. **Étape indispensable et facile à oublier** : dans **Overview >
+   Integrations > Add platform > Web app**, déclarer le(s) domaine(s) depuis
+   lesquels le site sera servi (`localhost` pour le développement local,
+   puis votre domaine réel une fois déployé sur Vercel, ex.
+   `groupetkr.com`). **Sans cette étape, toutes les requêtes du site vers
+   Appwrite échouent avec une erreur CORS** — c'est la cause la plus probable
+   si le site n'affiche toujours que le contenu provisoire après avoir
+   rempli les étapes précédentes.
 
 ## 3. Créer les collections et importer le contenu provisoire
+
+Le détail complet des collections (attributs, types, permissions) est documenté
+dans [`APPWRITE_SCHEMA.md`](./APPWRITE_SCHEMA.md) — utile si vous préférez
+créer les collections manuellement dans la console plutôt que via le script.
 
 Une fois `.env.local` complété :
 
@@ -43,19 +78,23 @@ Une fois `.env.local` complété :
 npm run setup:appwrite
 ```
 
-Ce script crée automatiquement la base de données, les 14 collections
+Ce script crée automatiquement la base de données, les 15 collections
 (branches, valeurs, services, réalisations, équipe, témoignages, offres
 d'emploi, événements, blog, maisons à louer, terrains à vendre, commerce
-général, abonnés newsletter, messages reçus) et y importe le contenu
-provisoire, pour que vous puissiez tout de suite tester le back-office avant
-de saisir le contenu réel.
+général, abonnés newsletter, messages reçus, candidatures) ainsi qu'un
+bucket de stockage dédié aux CV et lettres de motivation, et y importe le
+contenu provisoire, pour que vous puissiez tout de suite tester le
+back-office avant de saisir le contenu réel.
 
 Le script attribue aussi les permissions adaptées à chaque collection :
 - Contenu du site (branches, services, réalisations…) : lecture publique,
   écriture réservée aux comptes admin authentifiés.
-- Newsletter / messages de contact : un visiteur peut seulement **créer**
-  un message (formulaire public), jamais le relire ni le modifier — seul un
-  compte admin peut consulter la boîte de réception dans le back-office.
+- Newsletter / messages / candidatures : un visiteur peut seulement **créer**
+  une entrée (formulaire public, dépôt de CV/lettre), jamais la relire ni la
+  modifier — seul un compte admin peut consulter la boîte de réception dans
+  le back-office. Le bucket de fichiers suit la même logique : un candidat
+  peut déposer un fichier, mais ne peut pas parcourir ou relire les fichiers
+  déposés par d'autres candidats.
 
 Vous pouvez relancer `npm run setup:appwrite` à tout moment (par exemple
 après avoir mis à jour ce script) : il met à jour les permissions des
@@ -72,11 +111,20 @@ pour les personnes qui doivent réellement gérer le contenu du site.
 
 - `/admin/login` — connexion
 - `/admin` — tableau de bord
+- `/admin/applications` — **Candidatures** reçues via la page Carrières
+  (formulaire avec CV + lettre de motivation) : téléchargement des fichiers,
+  changement de statut, et réponse. Comme il n'y a pas de service d'envoi
+  d'email automatique branché, le bouton « Répondre par email » ouvre votre
+  propre logiciel de messagerie avec le texte de réponse déjà rempli —
+  aucun email n'est envoyé automatiquement depuis le serveur.
 - `/admin/collections/:key` — gestion de chaque collection (créer, modifier,
   supprimer des services, réalisations, biens à louer, offres d'emploi…).
   Les collections « Messages reçus » et « Abonnés newsletter » sont en
   lecture/suppression seule (pas de création manuelle ni de modification),
-  puisqu'il s'agit de soumissions venant du site public.
+  puisqu'il s'agit de soumissions venant du site public. Pour les biens
+  « Maisons à louer » / « Terrains à vendre », le champ « Photos » accepte
+  une URL d'image par ligne : elles s'afficheront dans la galerie du bouton
+  « Voir plus » sur le site public.
 
 ## 6. Déploiement sur Vercel
 

@@ -10,6 +10,20 @@ function emptyRecord(fields) {
   return rec;
 }
 
+// Pour les champs "imagelist", Appwrite stocke un vrai tableau d'URLs mais
+// le formulaire édite une zone de texte (une URL par ligne) — ces deux
+// fonctions font l'aller-retour.
+function toFormValue(field, raw) {
+  if (field.type === "imagelist" && Array.isArray(raw)) return raw.join("\n");
+  return raw ?? "";
+}
+function toSaveValue(field, raw) {
+  if (field.type === "imagelist") {
+    return String(raw || "").split(/\r?\n/).map((s) => s.trim()).filter(Boolean);
+  }
+  return raw;
+}
+
 export default function CollectionManagerPage() {
   const { key } = useParams();
   const config = ADMIN_COLLECTIONS.find((c) => c.key === key);
@@ -39,19 +53,22 @@ export default function CollectionManagerPage() {
   }
 
   function startEdit(item) {
-    setForm({ ...item });
+    const formData = {};
+    config.fields.forEach((f) => { formData[f.name] = toFormValue(f, item[f.name]); });
+    setForm({ ...item, ...formData });
     setEditing(item.$id);
   }
 
   async function handleSave(e) {
     e.preventDefault();
     try {
+      const payload = {};
+      config.fields.forEach((f) => { payload[f.name] = toSaveValue(f, form[f.name]); });
       if (editing === "new") {
-        await createItem(key, form);
+        await createItem(key, payload);
         setNotice("Élément créé.");
       } else {
-        const { $id, $createdAt, $updatedAt, $permissions, $collectionId, $databaseId, ...data } = form;
-        await updateItem(key, editing, data);
+        await updateItem(key, editing, payload);
         setNotice("Élément mis à jour.");
       }
       setEditing(null);
@@ -76,7 +93,7 @@ export default function CollectionManagerPage() {
       <div className="eyebrow">Back-office</div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 22 }}>
         <h1 style={{ fontSize: 24 }}>{config.label}</h1>
-        {editing === null && !config.readOnly && (
+        {editing === null && !config.readOnly && !config.singleton && (
           <button className="btn-maroon" onClick={startCreate} disabled={!isAppwriteConfigured}>+ Ajouter</button>
         )}
       </div>
@@ -93,11 +110,12 @@ export default function CollectionManagerPage() {
           {config.fields.map((f) => (
             <div key={f.name} style={{ marginBottom: 14 }}>
               <label className="field-label">{f.label}</label>
-              {f.type === "textarea" ? (
-                <textarea className="field-input" rows={3} value={form[f.name] ?? ""} onChange={(e) => setForm({ ...form, [f.name]: e.target.value })} />
+              {(f.type === "textarea" || f.type === "imagelist") ? (
+                <textarea className="field-input" rows={f.type === "imagelist" ? 3 : 3} value={form[f.name] ?? ""} onChange={(e) => setForm({ ...form, [f.name]: e.target.value })} />
               ) : (
                 <input className="field-input" type={f.type === "number" ? "number" : "text"} value={form[f.name] ?? ""} onChange={(e) => setForm({ ...form, [f.name]: e.target.value })} />
               )}
+              {f.type === "imagelist" && <p className="file-hint">Une URL par ligne (Cloudinary ou autre).</p>}
             </div>
           ))}
           <div style={{ display: "flex", gap: 10, marginTop: 8 }}>
@@ -119,7 +137,9 @@ export default function CollectionManagerPage() {
                 {!config.readOnly && (
                   <button className="btn-ghost" onClick={() => startEdit(item)} disabled={!isAppwriteConfigured}>Modifier</button>
                 )}
-                <button className="btn-ghost" onClick={() => handleDelete(item.$id)} disabled={!isAppwriteConfigured}>Supprimer</button>
+                {!config.singleton && (
+                  <button className="btn-ghost" onClick={() => handleDelete(item.$id)} disabled={!isAppwriteConfigured}>Supprimer</button>
+                )}
               </span>
             </div>
           ))}
@@ -130,6 +150,7 @@ export default function CollectionManagerPage() {
       <style>{`
         .field-label{display:block; font-family:'IBM Plex Mono'; font-size:11px; text-transform:uppercase; color:#8b8377; margin-bottom:6px;}
         .field-input{width:100%; border:1px solid var(--line-strong); background:var(--concrete); padding:10px 12px; font-size:14px; font-family:inherit;}
+        .file-hint{font-size:11.5px; color:#8b8377; margin-top:6px;}
         .admin-table{background:var(--paper); border:1px solid var(--line);}
         .admin-table-head, .admin-table-row{display:grid; grid-template-columns:1fr 220px; padding:12px 18px; align-items:center;}
         .admin-table-head{font-family:'IBM Plex Mono'; font-size:11px; text-transform:uppercase; color:#8b8377; border-bottom:1px solid var(--line);}

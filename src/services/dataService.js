@@ -1,4 +1,4 @@
-import { databases, DATABASE_ID, COLLECTIONS, isAppwriteConfigured } from "../lib/appwrite";
+import { databases, storage, DATABASE_ID, COLLECTIONS, BUCKET_APPLICATIONS, isAppwriteConfigured } from "../lib/appwrite";
 import { ID, Query } from "appwrite";
 
 import branchesSeed from "../data/seed/branches.json";
@@ -15,6 +15,8 @@ import landsSeed from "../data/seed/lands.json";
 import commerceSeed from "../data/seed/commerce.json";
 import newsletterSeed from "../data/seed/newsletter.json";
 import messagesSeed from "../data/seed/messages.json";
+import applicationsSeed from "../data/seed/applications.json";
+import settingsSeed from "../data/seed/settings.json";
 
 const SEED = {
   branches: branchesSeed,
@@ -31,6 +33,8 @@ const SEED = {
   commerce: commerceSeed,
   newsletter: newsletterSeed,
   messages: messagesSeed,
+  applications: applicationsSeed,
+  settings: settingsSeed,
 };
 
 /**
@@ -79,6 +83,21 @@ export async function updateItem(collectionKey, id, data) {
 export async function deleteItem(collectionKey, id) {
   if (!isAppwriteConfigured) throw new Error("Appwrite n'est pas encore configuré (voir .env.local).");
   return databases.deleteDocument(DATABASE_ID, COLLECTIONS[collectionKey], id);
+}
+
+// --- Fichiers (CV / lettres de motivation) -------------------------------
+// Upload possible pour n'importe quel visiteur (candidat anonyme) — voir le
+// modèle de permissions du bucket dans setup/seed-appwrite.mjs : seule la
+// création est autorisée aux anonymes, la lecture reste réservée aux admins.
+export async function uploadApplicationFile(file) {
+  if (!isAppwriteConfigured) throw new Error("Appwrite n'est pas encore configuré.");
+  const uploaded = await storage.createFile(BUCKET_APPLICATIONS, ID.unique(), file);
+  return uploaded.$id;
+}
+
+export function getApplicationFileDownloadUrl(fileId) {
+  if (!isAppwriteConfigured || !fileId) return null;
+  return storage.getFileDownload(BUCKET_APPLICATIONS, fileId).toString();
 }
 
 export { Query };

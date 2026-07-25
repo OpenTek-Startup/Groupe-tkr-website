@@ -3,11 +3,13 @@ import { useSearchParams } from "react-router-dom";
 import { useI18n } from "../../i18n/I18nContext";
 import { createItem } from "../../services/dataService";
 import { saveLocalFallback } from "../../lib/localFallback";
+import { useSettings } from "../../hooks/useSettings";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function ContactPage() {
   const { t } = useI18n();
+  const { settings } = useSettings();
   const [searchParams] = useSearchParams();
   const [values, setValues] = useState({ name: "", email: "", message: "", company: "" }); // "company" = champ piège (honeypot)
   const [status, setStatus] = useState("idle"); // idle | sending | ok | error
@@ -112,10 +114,9 @@ export default function ContactPage() {
 
           <div className="card" style={{ padding: 30 }}>
             <h4 style={{ fontSize: 16, marginBottom: 18 }}>{t("contact.info_title")}</h4>
-            <p style={{ fontSize: 14, marginBottom: 10 }}><strong>Téléphone :</strong> [à compléter]</p>
-            <p style={{ fontSize: 14, marginBottom: 10 }}><strong>Email :</strong> [à compléter]</p>
-            <p style={{ fontSize: 14, marginBottom: 10 }}><strong>Adresse :</strong> Yaoundé, Cameroun [à préciser]</p>
-            <p style={{ fontSize: 14 }}><strong>Horaires :</strong> [à compléter]</p>
+            <p style={{ fontSize: 14, marginBottom: 10 }}><strong>Téléphone :</strong> {settings?.contactPhone || "[à compléter]"}</p>
+            <p style={{ fontSize: 14, marginBottom: 10 }}><strong>Email :</strong> {settings?.contactEmail || "[à compléter]"}</p>
+            <p style={{ fontSize: 14, marginBottom: 10 }}><strong>Adresse :</strong> {settings?.address || "Yaoundé, Cameroun [à préciser]"}</p>
           </div>
         </div>
       </section>

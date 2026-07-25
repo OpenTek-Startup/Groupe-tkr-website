@@ -42,5 +42,17 @@
     "title_en": "IT & Graphic Design",
     "description_fr": "Développement de sites et applications, infrastructure informatique, identité visuelle et supports graphiques pour le Groupe et ses clients.",
     "description_en": "Website and app development, IT infrastructure, visual identity and graphic design for the Group and external clients."
+  },
+  {
+    "$id": "commerce",
+    "code": "05",
+    "color": "slate",
+    "link": "/commerce-general",
+    "name_fr": "TKR Commerce",
+    "name_en": "TKR Commerce",
+    "title_fr": "Commerce Général",
+    "title_en": "General Trade",
+    "description_fr": "Vente de matériaux de construction, de produits agroalimentaires et d'autres biens de consommation courante, en complément des autres filières du Groupe.",
+    "description_en": "Sale of construction materials, agri-food products and other everyday consumer goods, complementing the Group's other divisions."
   }
 ]

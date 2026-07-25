@@ -1,18 +1,20 @@
 import { Link } from "react-router-dom";
 import { useI18n } from "../../i18n/I18nContext";
+import { parseImages } from "../../lib/images";
 
-const COLORS = { amber: "#DE9F3C", brick: "#C4536F", teal: "#4FA391", indigo: "#8377D6" };
+const COLORS = { amber: "#DE9F3C", brick: "#C4536F", teal: "#4FA391", indigo: "#8377D6", slate: "#5C7A8A" };
 
 export function BranchCard({ branch }) {
   const { field, t } = useI18n();
   const color = COLORS[branch.color] || "#DE9F3C";
+  const href = branch.link || `/activites#${branch.$id}`;
   return (
     <div className="branch-card">
       <span className="accent-line" style={{ background: color }} />
       <span className="code" style={{ color }}>{branch.code} / {field(branch, "name")}</span>
       <h3>{field(branch, "title")}</h3>
       <p>{field(branch, "description")}</p>
-      <Link to={`/activites#${branch.$id}`} className="more" style={{ color }}>{t("services.more")} →</Link>
+      <Link to={href} className="more" style={{ color }}>{t("services.more")} →</Link>
       <style>{`
         .branch-card{background:#242019; border:1px solid rgba(248,245,239,.1); padding:32px; position:relative; color:var(--paper); transition:transform .25s ease, border-color .25s ease;}
         .branch-card:hover{transform:translateY(-4px); border-color:rgba(248,245,239,.28);}
@@ -116,11 +118,15 @@ export function TeamCard({ member }) {
   );
 }
 
-export function RentalCard({ item }) {
-  const { field } = useI18n();
+export function RentalCard({ item, onOpen }) {
+  const { field, t } = useI18n();
+  const cover = parseImages(item.images, 1)[0];
   return (
     <div className="listing-card">
-      <div className="listing-thumb" style={{ background: "linear-gradient(160deg, #C4536F, #2a2419)" }} />
+      <div
+        className="listing-thumb"
+        style={cover ? { backgroundImage: `url(${cover})`, backgroundSize: "cover", backgroundPosition: "center" } : { background: "linear-gradient(160deg, #C4536F, #2a2419)" }}
+      />
       <div className="listing-body">
         <h4>{field(item, "title")}</h4>
         <p className="loc">{field(item, "location")}</p>
@@ -129,6 +135,7 @@ export function RentalCard({ item }) {
           <span>{item.rooms ? `${item.rooms} pièces` : ""}</span>
           <span className="price">{field(item, "price")}</span>
         </div>
+        <button className="btn-ghost listing-more" onClick={() => onOpen(item)}>{t("listing.more")}</button>
       </div>
       <style>{`
         .listing-card{background:var(--paper); border:1px solid var(--line);}
@@ -139,16 +146,21 @@ export function RentalCard({ item }) {
         .listing-body p{font-size:13.5px; color:#544D45;}
         .listing-meta{display:flex; justify-content:space-between; margin-top:14px; padding-top:14px; border-top:1px solid var(--line); font-size:13px;}
         .listing-meta .price{font-weight:600; color:var(--maroon);}
+        .listing-more{width:100%; margin-top:16px;}
       `}</style>
     </div>
   );
 }
 
-export function LandCard({ item }) {
-  const { field } = useI18n();
+export function LandCard({ item, onOpen }) {
+  const { field, t } = useI18n();
+  const cover = parseImages(item.images, 1)[0];
   return (
     <div className="listing-card">
-      <div className="listing-thumb" style={{ background: "linear-gradient(160deg, #DE9F3C, #2a2419)" }} />
+      <div
+        className="listing-thumb"
+        style={cover ? { backgroundImage: `url(${cover})`, backgroundSize: "cover", backgroundPosition: "center" } : { background: "linear-gradient(160deg, #DE9F3C, #2a2419)" }}
+      />
       <div className="listing-body">
         <h4>{field(item, "title")}</h4>
         <p className="loc">{field(item, "location")}</p>
@@ -157,6 +169,7 @@ export function LandCard({ item }) {
           <span>{item.surface}</span>
           <span className="price">{field(item, "price")}</span>
         </div>
+        <button className="btn-ghost listing-more" onClick={() => onOpen(item)}>{t("listing.more")}</button>
       </div>
       <style>{`
         .listing-card{background:var(--paper); border:1px solid var(--line);}
@@ -167,6 +180,7 @@ export function LandCard({ item }) {
         .listing-body p{font-size:13.5px; color:#544D45;}
         .listing-meta{display:flex; justify-content:space-between; margin-top:14px; padding-top:14px; border-top:1px solid var(--line); font-size:13px;}
         .listing-meta .price{font-weight:600; color:var(--maroon);}
+        .listing-more{width:100%; margin-top:16px;}
       `}</style>
     </div>
   );
@@ -174,15 +188,35 @@ export function LandCard({ item }) {
 
 export function CommerceCard({ item }) {
   const { field } = useI18n();
+  const images = parseImages(item.images, 3);
   return (
-    <div className="card" style={{ padding: 24 }}>
-      <h4 style={{ fontSize: 15.5, marginBottom: 8, fontFamily: "Oswald", textTransform: "uppercase" }}>{field(item, "title")}</h4>
-      <p style={{ fontSize: 13.5, color: "#544D45" }}>{field(item, "description")}</p>
+    <div className="card commerce-card">
+      {images.length > 0 ? (
+        <div className="commerce-thumbs">
+          {images.map((src, i) => <img key={i} src={src} alt="" />)}
+        </div>
+      ) : (
+        <div className="commerce-thumbs placeholder">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="commerce-thumb-placeholder" style={{ background: "linear-gradient(160deg, #5C7A8A, #2a2419)" }} />
+          ))}
+        </div>
+      )}
+      <div style={{ padding: 20 }}>
+        <h4 style={{ fontSize: 15.5, marginBottom: 8, fontFamily: "Oswald", textTransform: "uppercase" }}>{field(item, "title")}</h4>
+        <p style={{ fontSize: 13.5, color: "#544D45" }}>{field(item, "description")}</p>
+      </div>
+      <style>{`
+        .commerce-card{padding:0; overflow:hidden;}
+        .commerce-thumbs{display:grid; grid-template-columns:repeat(3,1fr); gap:2px;}
+        .commerce-thumbs img{width:100%; aspect-ratio:1; object-fit:cover; display:block;}
+        .commerce-thumb-placeholder{width:100%; aspect-ratio:1;}
+      `}</style>
     </div>
   );
 }
 
-export function JobCard({ job }) {
+export function JobCard({ job, onApply }) {
   const { field, t } = useI18n();
   return (
     <div className="job-card">
@@ -192,7 +226,7 @@ export function JobCard({ job }) {
         <p className="loc">{field(job, "location")}</p>
         <p>{field(job, "description")}</p>
       </div>
-      <Link to={`/contact?sujet=${encodeURIComponent(field(job, "title"))}`} className="btn-ghost">{t("jobs.apply")}</Link>
+      <button className="btn-ghost" onClick={() => onApply(field(job, "title"))}>{t("jobs.apply")}</button>
       <style>{`
         .job-card{background:var(--paper); border:1px solid var(--line); padding:26px; display:flex; flex-direction:column; justify-content:space-between; gap:18px;}
         .job-card h4{font-size:17px; margin:12px 0 4px;}

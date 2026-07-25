@@ -9,12 +9,13 @@
  * Utilisation :
  *   1. Créez un projet sur https://cloud.appwrite.io
  *   2. Dans le projet : Overview > Integrations > API Keys > créez une clé
- *      avec les scopes "databases.write" (ou Full Access pour aller vite).
+ *      avec les scopes "databases.write" et "files.write" (ou Full Access
+ *      pour aller vite).
  *   3. Copiez .env.example vers .env.local et remplissez :
  *        VITE_APPWRITE_ENDPOINT, VITE_APPWRITE_PROJECT_ID, APPWRITE_API_KEY
  *   4. Lancez : npm run setup:appwrite
  */
-import { Client, Databases, ID, Permission, Role } from "node-appwrite";
+import { Client, Databases, Storage, ID, Permission, Role } from "node-appwrite";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -24,7 +25,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ENDPOINT = process.env.VITE_APPWRITE_ENDPOINT || "https://cloud.appwrite.io/v1";
 const PROJECT_ID = process.env.VITE_APPWRITE_PROJECT_ID;
 const API_KEY = process.env.APPWRITE_API_KEY;
-const DATABASE_ID = process.env.VITE_APPWRITE_DATABASE_ID || "tkr_main";
+const DATABASE_ID = process.env.VITE_APPWRITE_DATABASE_ID || "6a5b328400308612967e";
+const BUCKET_APPLICATIONS = process.env.VITE_BUCKET_APPLICATIONS || "applications";
 
 if (!PROJECT_ID || !API_KEY) {
   console.error("✗ VITE_APPWRITE_PROJECT_ID et APPWRITE_API_KEY doivent être définis (.env.local).");
@@ -34,6 +36,7 @@ if (!PROJECT_ID || !API_KEY) {
 
 const client = new Client().setEndpoint(ENDPOINT).setProject(PROJECT_ID).setKey(API_KEY);
 const databases = new Databases(client);
+const storage = new Storage(client);
 
 // --- Modèle de permissions -------------------------------------------------
 // CONTENT : lisible par tout le monde (site public), modifiable uniquement
@@ -94,7 +97,7 @@ const COLLECTIONS = [
       ["title_fr", "string", 150], ["title_en", "string", 150],
       ["location_fr", "string", 150], ["location_en", "string", 150],
       ["description_fr", "string", 1000], ["description_en", "string", 1000],
-      ["image", "string", 500],
+      ["image", "url", null],
     ],
     seed: "projects.json",
   },
@@ -104,7 +107,7 @@ const COLLECTIONS = [
       ["name", "string", 150],
       ["role_fr", "string", 150], ["role_en", "string", 150],
       ["bio_fr", "string", 1000], ["bio_en", "string", 1000],
-      ["photo", "string", 500],
+      ["photo", "url", null],
     ],
     seed: "team.json",
   },
@@ -145,6 +148,7 @@ const COLLECTIONS = [
       ["date", "string", 20], ["author", "string", 100],
       ["excerpt_fr", "string", 500], ["excerpt_en", "string", 500],
       ["content_fr", "string", 5000], ["content_en", "string", 5000],
+      ["coverImage", "url", null],
     ],
     seed: "blog.json",
   },
@@ -156,7 +160,7 @@ const COLLECTIONS = [
       ["rooms", "integer"],
       ["price_fr", "string", 100], ["price_en", "string", 100],
       ["description_fr", "string", 1000], ["description_en", "string", 1000],
-      ["image", "string", 500],
+      ["images", "url[]", null],
     ],
     seed: "rentals.json",
   },
@@ -168,7 +172,7 @@ const COLLECTIONS = [
       ["surface", "string", 40],
       ["price_fr", "string", 100], ["price_en", "string", 100],
       ["description_fr", "string", 1000], ["description_en", "string", 1000],
-      ["image", "string", 500],
+      ["images", "url[]", null],
     ],
     seed: "lands.json",
   },
@@ -177,6 +181,7 @@ const COLLECTIONS = [
     attrs: [
       ["title_fr", "string", 150], ["title_en", "string", 150],
       ["description_fr", "string", 1000], ["description_en", "string", 1000],
+      ["images", "url[]", null],
     ],
     seed: "commerce.json",
   },
@@ -197,6 +202,36 @@ const COLLECTIONS = [
       ["date", "string", 30],
     ],
     seed: "messages.json",
+  },
+  {
+    id: "applications", name: "Candidatures", perms: LEADS_PERMS,
+    attrs: [
+      ["job_title", "string", 150],
+      ["name", "string", 150],
+      ["email", "string", 200],
+      ["phone", "string", 40],
+      ["message", "string", 2000],
+      ["cv_file_id", "string", 100],
+      ["cv_file_name", "string", 200],
+      ["cover_letter_file_id", "string", 100],
+      ["cover_letter_file_name", "string", 200],
+      ["status", "string", 30],
+      ["response", "string", 2000],
+      ["date", "string", 30],
+    ],
+    seed: "applications.json",
+  },
+  {
+    id: "site_settings", name: "Coordonnées & réseaux sociaux", perms: CONTENT_PERMS,
+    attrs: [
+      ["contactEmail", "string", 150],
+      ["contactPhone", "string", 60],
+      ["address", "string", 255],
+      ["facebookUrl", "url", null],
+      ["linkedinUrl", "url", null],
+      ["twitterUrl", "url", null],
+    ],
+    seed: "settings.json",
   },
 ];
 
@@ -231,6 +266,8 @@ async function ensureCollection(col) {
     try {
       if (type === "string") await databases.createStringAttribute(DATABASE_ID, col.id, attrName, size, false);
       if (type === "integer") await databases.createIntegerAttribute(DATABASE_ID, col.id, attrName, false);
+      if (type === "url") await databases.createUrlAttribute(DATABASE_ID, col.id, attrName, false);
+      if (type === "url[]") await databases.createUrlAttribute(DATABASE_ID, col.id, attrName, false, undefined, true);
       await sleep(250); // laisse Appwrite indexer l'attribut avant le suivant
     } catch (e) {
       console.warn(`    (attribut "${attrName}" ignoré : ${e.message})`);
@@ -252,6 +289,26 @@ async function seedCollection(col) {
   console.log(`  ✓ ${docs.length} document(s) importé(s) dans "${col.id}".`);
 }
 
+async function ensureApplicationsBucket() {
+  const perms = [
+    Permission.create(Role.any()), // un candidat anonyme peut déposer un fichier
+    Permission.read(Role.users()), // seul un compte admin authentifié peut le relire/télécharger
+    Permission.delete(Role.users()),
+  ];
+  try {
+    await storage.getBucket(BUCKET_APPLICATIONS);
+    await storage.updateBucket(BUCKET_APPLICATIONS, "Candidatures (CV / lettres)", perms, false, true, 5 * 1024 * 1024, ["pdf", "doc", "docx"]);
+    console.log(`✓ Bucket de stockage "${BUCKET_APPLICATIONS}" déjà présent — permissions mises à jour.`);
+  } catch (e) {
+    if (!String(e.message).includes("could not be found")) {
+      console.warn(`  (impossible de mettre à jour le bucket : ${e.message})`);
+      return;
+    }
+    await storage.createBucket(BUCKET_APPLICATIONS, "Candidatures (CV / lettres)", perms, false, true, 5 * 1024 * 1024, ["pdf", "doc", "docx"]);
+    console.log(`✓ Bucket de stockage "${BUCKET_APPLICATIONS}" créé (5 Mo max, PDF/DOC/DOCX uniquement).`);
+  }
+}
+
 async function main() {
   console.log(`Connexion à ${ENDPOINT} (projet ${PROJECT_ID})…`);
   await ensureDatabase();
@@ -261,6 +318,8 @@ async function main() {
     await sleep(500);
     await seedCollection(col);
   }
+  console.log("");
+  await ensureApplicationsBucket();
   console.log("\n✓ Terminé. Le site utilisera désormais Appwrite dès que VITE_APPWRITE_PROJECT_ID est renseigné côté front (.env.local).");
 }
 

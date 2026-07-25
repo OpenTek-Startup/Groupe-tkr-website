@@ -21,6 +21,25 @@
   "testimonials": { "eyebrow": "Testimonials", "title": "What people say" },
   "team": { "eyebrow": "The team", "title": "The people behind the Group" },
   "jobs": { "eyebrow": "Careers", "title": "Join Groupe TKR", "lead": "Find the positions currently open across our divisions.", "empty": "No openings published yet. Check back soon!", "apply": "Apply" },
+  "application": {
+    "title": "Apply — {poste}",
+    "name": "Full name",
+    "email": "Email address",
+    "phone": "Phone",
+    "message": "Message (optional)",
+    "cv": "CV / Resume",
+    "cover_letter": "Cover letter",
+    "file_hint": "Accepted formats: PDF, DOC, DOCX — 5 MB max",
+    "submit": "Send my application",
+    "sending": "Sending…",
+    "success": "Application sent. We'll get back to you shortly.",
+    "success_demo": "Application recorded in demo mode: since Appwrite isn't configured yet, your files could not be transmitted. Once the back end is connected, submissions will go through fully.",
+    "error_required": "Please fill in the required fields and attach your CV and cover letter.",
+    "error_email": "Please enter a valid email address.",
+    "error_file_type": "File type not accepted (PDF, DOC or DOCX only).",
+    "error_file_size": "File too large (5 MB max).",
+    "error_upload": "Something went wrong while sending. Please try again."
+  },
   "events": { "eyebrow": "Events", "title": "Upcoming events", "empty": "No upcoming events at the moment." },
   "blog": { "eyebrow": "News", "title": "Groupe TKR Blog", "empty": "No articles published yet.", "readMore": "Read article" },
   "contact": { "eyebrow": "Contact", "title": "Have a project for us?", "lead": "Write to us, a member of the Groupe TKR team will get back to you.", "form_name": "Full name", "form_email": "Email address", "form_message": "Your message", "form_submit": "Send message", "form_sending": "Sending…", "form_success": "Message sent. We'll get back to you shortly.", "form_error_required": "Please fill in all fields.", "form_error_email": "Please enter a valid email address.", "form_prefill_job": "Hello, I would like to apply for the \"{poste}\" position. ", "info_title": "Contact details" },
@@ -29,5 +48,6 @@
   "commerce": { "title": "General Trade", "lead": "Other products and services offered by Groupe TKR.", "empty": "No offer published yet." },
   "legal": { "eyebrow": "Legal information", "title": "Legal Notice" },
   "footer": { "tagline": "The Construction TGV — civil engineering, real estate, aquaculture and digital, from Yaoundé.", "branches": "Our divisions", "nav": "Navigation", "newsletter": "Newsletter", "newsletter_lead": "Site updates and new offers from the Group.", "newsletter_placeholder": "Email address", "newsletter_cta": "Subscribe", "newsletter_ok": "Thank you! Your subscription has been recorded.", "newsletter_invalid": "Please enter a valid email address.", "rights": "All rights reserved.", "madeby": "Site built by" },
+  "listing": { "more": "See more", "photo_soon": "Photo coming soon", "contact_cta": "Contact us about this listing" },
   "common": { "provisional_banner": "Provisional content — pending final information from Groupe TKR" }
 }

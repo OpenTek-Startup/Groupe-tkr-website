@@ -15,6 +15,11 @@ export default function DashboardPage() {
         </div>
       )}
 
+      <Link to="/admin/applications" className="card" style={{ padding: 22, display: "block", marginBottom: 24, borderColor: "var(--amber)", background: "#FFF8EC" }}>
+        <h4 style={{ fontSize: 16, marginBottom: 6, color: "#8a5f1f" }}>★ Candidatures reçues</h4>
+        <p style={{ fontSize: 13, color: "#544D45" }}>Consulter les candidatures envoyées via la page Carrières, télécharger les CV et lettres de motivation, et y répondre.</p>
+      </Link>
+
       <div className="grid-3">
         {ADMIN_COLLECTIONS.map((c) => (
           <Link key={c.key} to={`/admin/collections/${c.key}`} className="card" style={{ padding: 22 }}>
