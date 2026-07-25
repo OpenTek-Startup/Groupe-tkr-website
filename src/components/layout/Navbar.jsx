@@ -16,6 +16,7 @@ const MORE_LINKS = [
   { to: "/location-maisons", labelKey: "more.rentals" },
   { to: "/vente-terrains", labelKey: "more.land" },
   { to: "/commerce-general", labelKey: "more.commerce" },
+  { to: "/blog", labelKey: "more.blog" },
   { to: "/carrieres", labelKey: "more.jobs" },
   { to: "/mentions-legales", labelKey: "more.legal" },
 ];

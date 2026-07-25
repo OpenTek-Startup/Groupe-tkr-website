@@ -1,6 +1,6 @@
 {
   "nav": { "home": "Home", "about": "About", "services": "What We Do", "projects": "Projects", "more": "More", "contact": "Contact", "legal": "Legal Notice", "cta": "Contact Us" },
-  "more": { "rentals": "Houses to Rent", "land": "Land for Sale", "commerce": "General Trade", "jobs": "Careers", "legal": "Legal Notice" },
+  "more": { "rentals": "Houses to Rent", "land": "Land for Sale", "commerce": "General Trade", "blog": "News", "jobs": "Careers", "legal": "Legal Notice" },
   "hero": {
     "eyebrow": "Multi-sector Group — Yaoundé, Cameroon",
     "title1": "Four businesses,",

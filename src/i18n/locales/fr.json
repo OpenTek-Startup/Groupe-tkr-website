@@ -1,6 +1,6 @@
 {
   "nav": { "home": "Accueil", "about": "À propos", "services": "Nos activités", "projects": "Réalisations", "more": "Voir plus", "contact": "Contact", "legal": "Mentions légales", "cta": "Nous contacter" },
-  "more": { "rentals": "Maisons à louer", "land": "Terrains à vendre", "commerce": "Commerce général", "jobs": "Carrières", "legal": "Mentions légales" },
+  "more": { "rentals": "Maisons à louer", "land": "Terrains à vendre", "commerce": "Commerce général", "blog": "Actualités", "jobs": "Carrières", "legal": "Mentions légales" },
   "hero": {
     "eyebrow": "Groupe multisectoriel — Yaoundé, Cameroun",
     "title1": "Quatre métiers,",
