@@ -1,17 +1,25 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../lib/AuthContext";
 import { useI18n } from "../../i18n/I18nContext";
+import PasswordField from "../../components/ui/PasswordField";
 import logo from "../../assets/logo-tkr.png";
 
 export default function LoginPage() {
-  const { login, isAppwriteConfigured } = useAuth();
+  const { user, loading: authLoading, login, isAppwriteConfigured } = useAuth();
   const { lang, setLang } = useI18n();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Si une session est déjà active (ex : connexion réussie précédemment,
+  // puis retour manuel sur cette page), on ne réaffiche pas le formulaire —
+  // on renvoie directement vers le tableau de bord.
+  useEffect(() => {
+    if (!authLoading && user) navigate("/admin", { replace: true });
+  }, [authLoading, user, navigate]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -21,7 +29,21 @@ export default function LoginPage() {
       await login(email, password);
       navigate("/admin");
     } catch (err) {
-      setError(err.message || "Connexion impossible.");
+      const sessionAlreadyActive = /session is active|session is prohibited/i.test(err.message || "");
+      const looksLikeNetworkIssue = /fetch|network|cors/i.test(err.message || "") || !err.message;
+      const looksLikeBadCredentials = err.code === 401 || /invalid credentials/i.test(err.message || "");
+
+      if (sessionAlreadyActive) {
+        // Ce n'est pas vraiment un échec : une session valide existe déjà
+        // pour ce navigateur, on en profite simplement pour y aller.
+        navigate("/admin");
+      } else if (looksLikeNetworkIssue) {
+        setError("Impossible de joindre Appwrite depuis ce domaine. Il manque probablement une étape de configuration : dans la console Appwrite, ajoutez ce site comme plateforme (Overview > Platforms > Add platform > Web app), avec le domaine exact affiché dans la barre d'adresse de votre navigateur.");
+      } else if (looksLikeBadCredentials) {
+        setError("Email ou mot de passe incorrect. Vérifiez qu'un utilisateur existe bien dans Appwrite (Auth > Users) — attention, ce n'est pas le compte avec lequel vous êtes connecté sur cloud.appwrite.io, mais un utilisateur créé spécifiquement pour ce projet.");
+      } else {
+        setError(err.message || "Connexion impossible.");
+      }
     } finally {
       setLoading(false);
     }
@@ -48,9 +70,16 @@ export default function LoginPage() {
         {error && <p style={{ color: "#a12", fontSize: 13, marginBottom: 12 }}>{error}</p>}
 
         <label className="field-label">Email</label>
-        <input className="field-input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <label className="field-label">Mot de passe</label>
-        <input className="field-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <input className="field-input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" />
+        <PasswordField
+          label="Mot de passe"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          autoComplete="current-password"
+        />
+        <div style={{ textAlign: "right", marginTop: 8 }}>
+          <Link to="/admin/forgot-password" style={{ fontSize: 12.5, color: "var(--maroon)" }}>Mot de passe oublié ?</Link>
+        </div>
 
         <button className="btn-maroon" style={{ marginTop: 18, width: "100%" }} disabled={loading || !isAppwriteConfigured}>
           {loading ? "Connexion…" : "Se connecter"}

@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { listItems, createItem, updateItem, deleteItem } from "../../services/dataService";
 import { ADMIN_COLLECTIONS } from "./adminCollectionsConfig";
 import { isAppwriteConfigured } from "../../lib/appwrite";
+import { relationId } from "../../lib/relations";
 
 function emptyRecord(fields) {
   const rec = {};
@@ -15,6 +16,7 @@ function emptyRecord(fields) {
 // fonctions font l'aller-retour.
 function toFormValue(field, raw) {
   if (field.type === "imagelist" && Array.isArray(raw)) return raw.join("\n");
+  if (field.type === "relation") return relationId(raw) ?? "";
   return raw ?? "";
 }
 function toSaveValue(field, raw) {
@@ -34,6 +36,7 @@ export default function CollectionManagerPage() {
   const [editing, setEditing] = useState(null); // null = liste, "new" = création, id = édition
   const [form, setForm] = useState({});
   const [notice, setNotice] = useState("");
+  const [relatedOptions, setRelatedOptions] = useState({}); // { collectionKey: [items] }
 
   async function refresh() {
     setLoading(true);
@@ -44,6 +47,20 @@ export default function CollectionManagerPage() {
   }
 
   useEffect(() => { refresh(); setEditing(null); setNotice(""); }, [key]); // eslint-disable-line
+
+  // Charge les collections référencées par un champ "relation" (ex : la
+  // liste des filières pour peupler le menu déroulant "Branche").
+  useEffect(() => {
+    if (!config) return;
+    const needed = [...new Set(config.fields.filter((f) => f.type === "relation").map((f) => f.relatedCollection))];
+    needed.forEach((col) => {
+      if (relatedOptions[col]) return;
+      listItems(col).then(({ items: docs }) => {
+        setRelatedOptions((prev) => ({ ...prev, [col]: docs }));
+      });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key]);
 
   if (!config) return <p>Collection inconnue.</p>;
 
@@ -111,11 +128,28 @@ export default function CollectionManagerPage() {
             <div key={f.name} style={{ marginBottom: 14 }}>
               <label className="field-label">{f.label}</label>
               {(f.type === "textarea" || f.type === "imagelist") ? (
-                <textarea className="field-input" rows={f.type === "imagelist" ? 3 : 3} value={form[f.name] ?? ""} onChange={(e) => setForm({ ...form, [f.name]: e.target.value })} />
+                <textarea className="field-input" rows={3} value={form[f.name] ?? ""} onChange={(e) => setForm({ ...form, [f.name]: e.target.value })} />
+              ) : f.type === "select" ? (
+                <select className="field-input" value={form[f.name] ?? ""} onChange={(e) => setForm({ ...form, [f.name]: e.target.value })}>
+                  <option value="">— Choisir —</option>
+                  {f.options.map((opt) => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+                </select>
+              ) : f.type === "relation" ? (
+                <select className="field-input" value={form[f.name] ?? ""} onChange={(e) => setForm({ ...form, [f.name]: e.target.value })}>
+                  <option value="">— Choisir —</option>
+                  {(relatedOptions[f.relatedCollection] || []).map((opt) => (
+                    <option key={opt.$id} value={opt.$id}>{opt[f.labelField] || opt.$id}</option>
+                  ))}
+                </select>
+              ) : f.type === "date" ? (
+                <input className="field-input" type="date" value={form[f.name] ?? ""} onChange={(e) => setForm({ ...form, [f.name]: e.target.value })} />
               ) : (
                 <input className="field-input" type={f.type === "number" ? "number" : "text"} value={form[f.name] ?? ""} onChange={(e) => setForm({ ...form, [f.name]: e.target.value })} />
               )}
               {f.type === "imagelist" && <p className="file-hint">Une URL par ligne (Cloudinary ou autre).</p>}
+              {f.type === "relation" && !relatedOptions[f.relatedCollection] && (
+                <p className="file-hint">Chargement des options…</p>
+              )}
             </div>
           ))}
           <div style={{ display: "flex", gap: 10, marginTop: 8 }}>

@@ -5,7 +5,7 @@ import branches from "../../data/seed/branches.json";
 import { createItem } from "../../services/dataService";
 import { saveLocalFallback } from "../../lib/localFallback";
 import { useSettings } from "../../hooks/useSettings";
-import logo from "../../assets/logo-tkr.png";
+import logoLight from "../../assets/logo-tkr-light.png";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -47,7 +47,7 @@ export default function Footer() {
         <div className="foot-grid">
           <div className="foot-brand">
             <Link to="/" className="foot-logo">
-              <img src={logo} alt="Groupe TKR" />
+              <span className="logo-badge"><img src={logoLight} alt="Groupe TKR" /></span>
               <span>GROUPE TKR</span>
             </Link>
             <p>{t("footer.tagline")}</p>
@@ -108,7 +108,8 @@ export default function Footer() {
         .tkr-footer{background:var(--charcoal); color:#C4BCAD; padding:64px 0 28px;}
         .foot-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr 1.2fr; gap:40px; padding-bottom:40px; border-bottom:1px solid rgba(248,245,239,.12);}
         .foot-logo{display:flex; align-items:center; gap:10px; margin-bottom:14px;}
-        .foot-logo img{height:34px; width:auto;}
+        .foot-logo .logo-badge{height:34px; width:34px; flex:none; background:#fff; border-radius:8px; display:flex; align-items:center; justify-content:center; overflow:hidden; padding:2px;}
+        .foot-logo .logo-badge img{width:100%; height:100%; object-fit:contain;}
         .foot-logo span{font-family:'Oswald'; color:var(--paper); font-size:17px; letter-spacing:.03em;}
         .foot-brand p{font-size:13px; max-width:32ch; margin-bottom:18px;}
         .foot-social{display:flex; gap:10px;}

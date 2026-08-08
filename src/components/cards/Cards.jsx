@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useI18n } from "../../i18n/I18nContext";
 import { parseImages } from "../../lib/images";
+import { relationId } from "../../lib/relations";
 
 const COLORS = { amber: "#DE9F3C", brick: "#C4536F", teal: "#4FA391", indigo: "#8377D6", slate: "#5C7A8A" };
 
@@ -47,11 +48,12 @@ export function ValueCard({ value, index }) {
 
 export function ProjectCard({ project }) {
   const { field } = useI18n();
-  const branchColor = { btp: "#DE9F3C", immobilier: "#C4536F", aquaculture: "#4FA391", opentek: "#8377D6" }[project.branch] || "#DE9F3C";
+  const branchId = relationId(project.branch);
+  const branchColor = { btp: "#DE9F3C", immobilier: "#C4536F", aquaculture: "#4FA391", opentek: "#8377D6" }[branchId] || "#DE9F3C";
   return (
     <div className="proj-card">
       <div className="proj-thumb" style={{ background: `linear-gradient(160deg, ${branchColor}, #2a2419)` }}>
-        <span className="tag">{project.branch}</span>
+        <span className="tag">{branchId}</span>
       </div>
       <div className="proj-body">
         <h4>{field(project, "title")}</h4>

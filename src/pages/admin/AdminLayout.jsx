@@ -19,7 +19,7 @@ export default function AdminLayout() {
     <div className="admin-shell">
       <aside className="admin-sidebar">
         <div className="admin-brand">
-          <img src={logoLight} alt="Groupe TKR" />
+          <span className="logo-badge"><img src={logoLight} alt="Groupe TKR" /></span>
           <div>GROUPE TKR<span>Back-office</span></div>
         </div>
         <div className="admin-lang">
@@ -51,7 +51,8 @@ export default function AdminLayout() {
         .admin-shell{display:grid; grid-template-columns:240px 1fr; min-height:100vh; background:var(--concrete);}
         .admin-sidebar{background:var(--charcoal); color:var(--concrete); padding:24px 18px; display:flex; flex-direction:column;}
         .admin-brand{display:flex; align-items:center; gap:10px; margin-bottom:18px;}
-        .admin-brand img{width:36px; height:36px; object-fit:contain;}
+        .admin-brand .logo-badge{width:36px; height:36px; flex:none; background:#fff; border-radius:8px; display:flex; align-items:center; justify-content:center; overflow:hidden; padding:2px;}
+        .admin-brand .logo-badge img{width:100%; height:100%; object-fit:contain;}
         .admin-brand div{font-family:'Oswald'; color:var(--paper); font-size:15px; letter-spacing:.03em; line-height:1.2;}
         .admin-brand span{display:block; font-family:'IBM Plex Mono'; font-size:10px; color:var(--amber); text-transform:uppercase; margin-top:2px;}
         .admin-lang{font-family:'IBM Plex Mono'; font-size:11px; display:flex; gap:6px; margin-bottom:22px; cursor:pointer;}

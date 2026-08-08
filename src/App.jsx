@@ -20,6 +20,8 @@ import LegalPage from "./pages/public/LegalPage";
 import NotFoundPage from "./pages/public/NotFoundPage";
 
 import LoginPage from "./pages/admin/LoginPage";
+import ForgotPasswordPage from "./pages/admin/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/admin/ResetPasswordPage";
 import AdminLayout from "./pages/admin/AdminLayout";
 import DashboardPage from "./pages/admin/DashboardPage";
 import CollectionManagerPage from "./pages/admin/CollectionManagerPage";
@@ -49,6 +51,8 @@ export default function App() {
             </Route>
 
             <Route path="/admin/login" element={<LoginPage />} />
+            <Route path="/admin/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/admin/reset-password" element={<ResetPasswordPage />} />
             <Route
               path="/admin"
               element={

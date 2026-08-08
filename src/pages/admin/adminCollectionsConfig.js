@@ -3,6 +3,14 @@
 // "key" doit correspondre à une entrée de src/lib/appwrite.js (COLLECTIONS)
 // et de src/data/seed/*.json.
 
+const BRANCH_COLOR_OPTIONS = [
+  { value: "amber", label: "Ambre (BTP)" },
+  { value: "brick", label: "Brique (Immobilier)" },
+  { value: "teal", label: "Sarcelle (Aquaculture)" },
+  { value: "indigo", label: "Indigo (Opentek)" },
+  { value: "slate", label: "Ardoise (Commerce)" },
+];
+
 export const ADMIN_COLLECTIONS = [
   {
     key: "branches",
@@ -10,7 +18,7 @@ export const ADMIN_COLLECTIONS = [
     titleField: "name_fr",
     fields: [
       { name: "code", label: "Code", type: "text" },
-      { name: "color", label: "Couleur (amber/brick/teal/indigo)", type: "text" },
+      { name: "color", label: "Couleur", type: "select", options: BRANCH_COLOR_OPTIONS },
       { name: "name_fr", label: "Nom (FR)", type: "text" },
       { name: "name_en", label: "Nom (EN)", type: "text" },
       { name: "title_fr", label: "Titre (FR)", type: "text" },
@@ -36,7 +44,7 @@ export const ADMIN_COLLECTIONS = [
     label: "Services",
     titleField: "title_fr",
     fields: [
-      { name: "branch", label: "Branche (btp/immobilier/aquaculture/opentek)", type: "text" },
+      { name: "branch", label: "Filière", type: "relation", relatedCollection: "branches", labelField: "title_fr" },
       { name: "title_fr", label: "Titre (FR)", type: "text" },
       { name: "title_en", label: "Titre (EN)", type: "text" },
       { name: "description_fr", label: "Description (FR)", type: "textarea" },
@@ -48,7 +56,7 @@ export const ADMIN_COLLECTIONS = [
     label: "Réalisations",
     titleField: "title_fr",
     fields: [
-      { name: "branch", label: "Branche", type: "text" },
+      { name: "branch", label: "Filière", type: "relation", relatedCollection: "branches", labelField: "title_fr" },
       { name: "title_fr", label: "Titre (FR)", type: "text" },
       { name: "title_en", label: "Titre (EN)", type: "text" },
       { name: "location_fr", label: "Lieu (FR)", type: "text" },
@@ -90,7 +98,7 @@ export const ADMIN_COLLECTIONS = [
     fields: [
       { name: "title_fr", label: "Intitulé (FR)", type: "text" },
       { name: "title_en", label: "Intitulé (EN)", type: "text" },
-      { name: "branch", label: "Branche", type: "text" },
+      { name: "branch", label: "Filière", type: "relation", relatedCollection: "branches", labelField: "title_fr" },
       { name: "type_fr", label: "Type de contrat (FR)", type: "text" },
       { name: "type_en", label: "Type de contrat (EN)", type: "text" },
       { name: "location_fr", label: "Lieu (FR)", type: "text" },
@@ -106,7 +114,7 @@ export const ADMIN_COLLECTIONS = [
     fields: [
       { name: "title_fr", label: "Titre (FR)", type: "text" },
       { name: "title_en", label: "Titre (EN)", type: "text" },
-      { name: "date", label: "Date (AAAA-MM-JJ)", type: "text" },
+      { name: "date", label: "Date", type: "date" },
       { name: "location_fr", label: "Lieu (FR)", type: "text" },
       { name: "location_en", label: "Lieu (EN)", type: "text" },
       { name: "description_fr", label: "Description (FR)", type: "textarea" },
@@ -120,7 +128,7 @@ export const ADMIN_COLLECTIONS = [
     fields: [
       { name: "title_fr", label: "Titre (FR)", type: "text" },
       { name: "title_en", label: "Titre (EN)", type: "text" },
-      { name: "date", label: "Date (AAAA-MM-JJ)", type: "text" },
+      { name: "date", label: "Date", type: "date" },
       { name: "author", label: "Auteur", type: "text" },
       { name: "excerpt_fr", label: "Résumé (FR)", type: "textarea" },
       { name: "excerpt_en", label: "Résumé (EN)", type: "textarea" },

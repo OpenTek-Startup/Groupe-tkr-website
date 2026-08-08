@@ -50,8 +50,11 @@ Le site est alors disponible sur http://localhost:5173.
 1. Aller sur https://cloud.appwrite.io et créer un compte (de préférence avec
    un email dédié au Groupe TKR / Opentek, pas un email personnel).
 2. Créer un nouveau projet, par exemple nommé « Groupe TKR ».
-3. Dans **Overview > Integrations > API Keys**, créer une clé API serveur
-   avec le scope `databases.write` (ou "Full Access" pour aller plus vite).
+3. Dans **Overview > Integrations > API Keys**, créer une clé API serveur.
+   Ce script manipule des bases de données, collections, attributs,
+   documents **et** buckets de stockage : cocher **Full Access** (Select
+   all) plutôt que des scopes individuels — une clé trop restreinte échoue
+   avec l'erreur `The current user is not authorized...`.
    **Ne jamais partager cette clé ni la commiter dans Git.**
 4. Copier `.env.example` vers `.env.local` et renseigner :
    - `VITE_APPWRITE_PROJECT_ID` (visible dans Overview du projet)

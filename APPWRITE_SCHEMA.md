@@ -50,7 +50,7 @@ Permissions : lecture `any`, écriture réservée aux comptes admin (`users`).
 
 | Attribut | Type | Obligatoire | Notes |
 |----------|------|-------------|-------|
-| branch | string (40) | oui | ID du document `branches` correspondant (btp / immobilier / aquaculture / opentek) |
+| branch | **Relationship** → `branches` (Many to One, bidirectionnel, `onDelete: restrict`) | oui | Voir section « Relations entre collections » |
 | title_fr / title_en | string (150) | oui / non | |
 | description_fr / description_en | string (1000) | oui / non | |
 
@@ -61,7 +61,7 @@ collection `commerce` (section 11) et sa propre page publique.*
 
 | Attribut | Type | Obligatoire | Notes |
 |----------|------|-------------|-------|
-| branch | string (40) | oui | |
+| branch | **Relationship** → `branches` (Many to One, bidirectionnel, `onDelete: restrict`) | oui | |
 | title_fr / title_en | string (150) | oui / non | |
 | location_fr / location_en | string (150) | oui / non | |
 | description_fr / description_en | string (1000) | oui / non | |
@@ -89,7 +89,7 @@ collection `commerce` (section 11) et sa propre page publique.*
 | Attribut | Type | Obligatoire | Notes |
 |----------|------|-------------|-------|
 | title_fr / title_en | string (150) | oui / non | |
-| branch | string (40) | non | |
+| branch | **Relationship** → `branches` (Many to One, bidirectionnel, `onDelete: restrict`) | non | |
 | type_fr / type_en | string (60) | non | CDI, CDD… |
 | location_fr / location_en | string (150) | non | |
 | description_fr / description_en | string (1500) | oui / non | |
@@ -99,7 +99,7 @@ collection `commerce` (section 11) et sa propre page publique.*
 | Attribut | Type | Obligatoire | Notes |
 |----------|------|-------------|-------|
 | title_fr / title_en | string (150) | oui / non | |
-| date | string (20) | oui | Format AAAA-MM-JJ |
+| date | string (20) | oui | Format AAAA-MM-JJ (saisi via un sélecteur de date dans le back-office) |
 | location_fr / location_en | string (150) | non | |
 | description_fr / description_en | string (1000) | non | |
 
@@ -211,21 +211,83 @@ informations inventées.
 
 ## Relations entre collections
 
-Comme dans le projet Opentek dont ce schéma s'inspire, aucun attribut de
-type **Relationship** n'est utilisé ici. Le seul endroit où une relation
-aurait un sens est `applications.job_title`, qui référence conceptuellement
-un poste de la collection `jobs`. Ce schéma utilise volontairement un champ
+Trois relations sont **matérialisées** en attributs Appwrite de type
+**Relationship** (au lieu d'un simple champ texte contenant un ID) :
+
+| Collection source | Champ | Cible | Type | Bidirectionnel | Si la filière est supprimée |
+|---|---|---|---|---|---|
+| `services` | `branch` | `branches` | Many to One | Oui (`branches.services`) | **Restrict** — suppression bloquée tant que des services y sont rattachés |
+| `projects` | `branch` | `branches` | Many to One | Oui (`branches.projects`) | **Restrict** |
+| `jobs` | `branch` | `branches` | Many to One | Oui (`branches.jobs`) | **Restrict** |
+
+Concrètement, cela veut dire :
+- Dans la console Appwrite, ouvrir un document de `branches` affiche
+  désormais directement la liste de ses services/réalisations/offres liés
+  (grâce au côté bidirectionnel de la relation).
+- Le back-office affiche ces champs comme des **menus déroulants** (voir
+  `src/pages/admin/adminCollectionsConfig.js`, type `"relation"`) au lieu
+  d'un champ texte où il fallait taper l'identifiant exact de la filière.
+- `onDelete: restrict` empêche de supprimer une filière tant qu'un service,
+  une réalisation ou une offre d'emploi la référence encore — évite de se
+  retrouver avec des documents orphelins.
+- Le script `setup/seed-appwrite.mjs` crée ces relations automatiquement
+  (fonction `ensureCollection`, section `relationships`).
+
+**Exception délibérée — `applications.job_title`** : ce champ référence
+conceptuellement un poste de la collection `jobs`, mais reste un simple
 `string` dupliqué (copie de l'intitulé au moment de la candidature) plutôt
-qu'un attribut Relationship, pour la même raison que le projet Opentek :
+qu'un attribut Relationship, pour deux raisons :
 
 1. **Historique fiable** : si une offre d'emploi est modifiée ou supprimée
    plus tard, la candidature continue d'afficher l'intitulé du poste tel
    qu'il était au moment de l'envoi — le comportement attendu pour un
-   enregistrement de type archive.
-2. **Simplicité** : le back-office reste facile à déboguer directement
-   dans la console Appwrite, sans configuration de relation à deux sens.
+   enregistrement de type archive. Avec `onDelete: restrict`, il faudrait
+   interdire la suppression de toute offre ayant reçu une candidature ; avec
+   `setNull`, la candidature perdrait la trace du poste visé.
+2. **Simplicité** : les candidatures sont consultées dans une page
+   d'administration dédiée (`/admin/applications`), pas dans la console
+   Appwrite — la navigation par relation n'y apporte aucun bénéfice concret.
 
 Aucune autre collection de ce schéma n'a de lien naturel avec une autre.
+
+---
+
+## Permissions — tableau consolidé
+
+Toutes les collections suivent l'un de ces deux modèles (voir
+`CONTENT_PERMS` / `LEADS_PERMS` dans `setup/seed-appwrite.mjs`) :
+
+| Modèle | Lecture (`read`) | Création (`create`) | Modification (`update`) | Suppression (`delete`) |
+|---|---|---|---|---|
+| **Contenu du site** (CONTENT_PERMS) | `any` (public) | `users` (admin connecté) | `users` | `users` |
+| **Formulaires publics** (LEADS_PERMS) | `users` (admin uniquement) | `any` (visiteur anonyme) | `users` | `users` |
+
+Répartition collection par collection :
+
+| Collection | Modèle | Remarque |
+|---|---|---|
+| `branches` | Contenu du site | |
+| `values` | Contenu du site | |
+| `services` | Contenu du site | + relation vers `branches` |
+| `projects` | Contenu du site | + relation vers `branches` |
+| `team` | Contenu du site | |
+| `testimonials` | Contenu du site | |
+| `jobs` | Contenu du site | + relation vers `branches` |
+| `events` | Contenu du site | |
+| `blog` | Contenu du site | |
+| `rentals` | Contenu du site | |
+| `lands` | Contenu du site | |
+| `commerce` | Contenu du site | |
+| `newsletter` | Formulaires publics | lecture admin seule (confidentialité) |
+| `messages` | Formulaires publics | lecture admin seule (confidentialité) |
+| `applications` | Formulaires publics | lecture admin seule (confidentialité) ; fichiers CV/lettre dans le bucket `media`, permissions identiques |
+| `site_settings` | Contenu du site | document unique (`main`) |
+
+`users` désigne ici tout compte Appwrite authentifié (voir section
+« Authentification admin » ci-dessous) — actuellement, tout compte créé
+dans Auth > Users a accès complet au back-office. Pour restreindre cet
+accès à un sous-ensemble de comptes plus tard, voir la recommandation de
+rôle `admin` en fin de document.
 
 ---
 

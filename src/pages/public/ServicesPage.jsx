@@ -3,6 +3,7 @@ import { useI18n } from "../../i18n/I18nContext";
 import { useCollection } from "../../hooks/useCollection";
 import { ProvisionalBadge } from "../../components/ui/UiBits";
 import { CommerceCard } from "../../components/cards/Cards";
+import { relationId } from "../../lib/relations";
 
 const BRANCH_COLORS = { btp: "#DE9F3C", immobilier: "#C4536F", aquaculture: "#4FA391", opentek: "#8377D6", commerce: "#5C7A8A" };
 
@@ -39,7 +40,7 @@ export default function ServicesPage() {
               </>
             ) : (
               <div className="grid-3">
-                {services.items.filter((s) => s.branch === b.$id).map((s) => (
+                {services.items.filter((s) => relationId(s.branch) === b.$id).map((s) => (
                   <div className="card" key={s.$id} style={{ padding: 24 }}>
                     <h4 style={{ fontSize: 15.5, marginBottom: 8, fontFamily: "Oswald", textTransform: "uppercase" }}>{field(s, "title")}</h4>
                     <p style={{ fontSize: 13.5, color: "#544D45" }}>{field(s, "description")}</p>

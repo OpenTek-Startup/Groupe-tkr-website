@@ -8,9 +8,15 @@
  *
  * Utilisation :
  *   1. Créez un projet sur https://cloud.appwrite.io
- *   2. Dans le projet : Overview > Integrations > API Keys > créez une clé
- *      avec les scopes "databases.write" et "files.write" (ou Full Access
- *      pour aller vite).
+ *   2. Dans le projet : Overview > Integrations > API Keys > créez une clé.
+ *      Ce script manipule des bases de données, collections, attributs,
+ *      documents ET buckets de stockage : cochez "Full Access" (Select all)
+ *      plutôt que des scopes individuels — une clé trop restreinte échoue
+ *      avec l'erreur "The current user is not authorized...". Si vous
+ *      préférez limiter les scopes manuellement, il faut au minimum :
+ *      databases.read, databases.write, collections.read, collections.write,
+ *      attributes.read, attributes.write, documents.read, documents.write,
+ *      buckets.read, buckets.write, files.read, files.write.
  *   3. Copiez .env.example vers .env.local et remplissez :
  *        VITE_APPWRITE_ENDPOINT, VITE_APPWRITE_PROJECT_ID, APPWRITE_API_KEY
  *   4. Lancez : npm run setup:appwrite
@@ -26,7 +32,7 @@ const ENDPOINT = process.env.VITE_APPWRITE_ENDPOINT || "https://cloud.appwrite.i
 const PROJECT_ID = process.env.VITE_APPWRITE_PROJECT_ID;
 const API_KEY = process.env.APPWRITE_API_KEY;
 const DATABASE_ID = process.env.VITE_APPWRITE_DATABASE_ID || "6a5b328400308612967e";
-const BUCKET_APPLICATIONS = process.env.VITE_BUCKET_APPLICATIONS || "applications";
+const BUCKET_APPLICATIONS = process.env.VITE_BUCKET_APPLICATIONS || "media";
 
 if (!PROJECT_ID || !API_KEY) {
   console.error("✗ VITE_APPWRITE_PROJECT_ID et APPWRITE_API_KEY doivent être définis (.env.local).");
@@ -84,20 +90,24 @@ const COLLECTIONS = [
   {
     id: "services", name: "Services", perms: CONTENT_PERMS,
     attrs: [
-      ["branch", "string", 40],
       ["title_fr", "string", 150], ["title_en", "string", 150],
       ["description_fr", "string", 1000], ["description_en", "string", 1000],
+    ],
+    relationships: [
+      { key: "branch", relatedCollection: "branches", type: "manyToOne", twoWay: true, twoWayKey: "services", onDelete: "restrict" },
     ],
     seed: "services.json",
   },
   {
     id: "projects", name: "Réalisations", perms: CONTENT_PERMS,
     attrs: [
-      ["branch", "string", 40],
       ["title_fr", "string", 150], ["title_en", "string", 150],
       ["location_fr", "string", 150], ["location_en", "string", 150],
       ["description_fr", "string", 1000], ["description_en", "string", 1000],
       ["image", "url", null],
+    ],
+    relationships: [
+      { key: "branch", relatedCollection: "branches", type: "manyToOne", twoWay: true, twoWayKey: "projects", onDelete: "restrict" },
     ],
     seed: "projects.json",
   },
@@ -124,10 +134,12 @@ const COLLECTIONS = [
     id: "jobs", name: "Offres d'emploi", perms: CONTENT_PERMS,
     attrs: [
       ["title_fr", "string", 150], ["title_en", "string", 150],
-      ["branch", "string", 40],
       ["type_fr", "string", 60], ["type_en", "string", 60],
       ["location_fr", "string", 150], ["location_en", "string", 150],
       ["description_fr", "string", 1500], ["description_en", "string", 1500],
+    ],
+    relationships: [
+      { key: "branch", relatedCollection: "branches", type: "manyToOne", twoWay: true, twoWayKey: "jobs", onDelete: "restrict" },
     ],
     seed: "jobs.json",
   },
@@ -241,7 +253,14 @@ async function ensureDatabase() {
   try {
     await databases.get(DATABASE_ID);
     console.log(`✓ Base de données "${DATABASE_ID}" déjà présente.`);
-  } catch {
+  } catch (e) {
+    if (!/could not be found/i.test(e.message)) {
+      // La base existe peut-être déjà : ce n'est pas un "not found", donc
+      // inutile de tenter une création qui échouerait pour une tout autre
+      // raison (clé invalide, mauvais projet…) — on remonte l'erreur telle
+      // quelle pour un diagnostic clair au lieu de la masquer.
+      throw e;
+    }
     await databases.create(DATABASE_ID, "Groupe TKR");
     console.log(`✓ Base de données "${DATABASE_ID}" créée.`);
   }
@@ -271,6 +290,30 @@ async function ensureCollection(col) {
       await sleep(250); // laisse Appwrite indexer l'attribut avant le suivant
     } catch (e) {
       console.warn(`    (attribut "${attrName}" ignoré : ${e.message})`);
+    }
+  }
+
+  // Relations (Appwrite "Relationship" attributes) — matérialisent les
+  // références entre collections (ex : services.branch → branches) au lieu
+  // d'un simple champ texte. La collection ciblée (ex : "branches") doit
+  // déjà exister : c'est garanti ici car COLLECTIONS liste "branches" en
+  // premier, donc elle est créée avant "services"/"projects"/"jobs".
+  for (const rel of col.relationships || []) {
+    try {
+      await sleep(300);
+      await databases.createRelationshipAttribute(
+        DATABASE_ID,
+        col.id,
+        rel.relatedCollection,
+        rel.type,
+        rel.twoWay ?? false,
+        rel.key,
+        rel.twoWayKey,
+        rel.onDelete || "restrict"
+      );
+      console.log(`  ✓ Relation "${rel.key}" → "${rel.relatedCollection}" créée (${rel.type}).`);
+    } catch (e) {
+      console.warn(`    (relation "${rel.key}" ignorée : ${e.message})`);
     }
   }
 }
@@ -309,8 +352,41 @@ async function ensureApplicationsBucket() {
   }
 }
 
+async function checkConnectivity() {
+  const url = `${ENDPOINT}/health`;
+  try {
+    const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+    console.log(`✓ Réseau OK — ${ENDPOINT} est joignable (réponse HTTP ${res.status}).`);
+    console.log(`  (Ce test ne transmet pas encore votre clé API : un code différent de 200 ici`);
+    console.log(`  est normal et ne veut PAS dire que la clé est invalide — seul le test suivant,`);
+    console.log(`  avec vos identifiants, le dira.)`);
+  } catch (e) {
+    console.error(`✗ Impossible de joindre ${url} avant même de parler à Appwrite.`);
+    printNetworkDiagnostics(e);
+    process.exit(1);
+  }
+}
+
+function printNetworkDiagnostics(e) {
+  console.error(`  Détail : ${e.message}`);
+  if (e.cause) console.error(`  Cause  : ${e.cause.code || ""} ${e.cause.message || e.cause}`);
+  console.error(`  Node   : ${process.version} (14 minimum requis pour fetch natif ; 18+ recommandé)`);
+  console.error("\nPistes de dépannage, dans cet ordre :");
+  console.error("  1. Testez depuis un terminal (hors du script) :");
+  console.error(`       curl -I ${ENDPOINT}/health`);
+  console.error("     Si curl échoue aussi → le problème est réseau, pas le script.");
+  console.error("  2. Vérifiez votre connexion Internet tout court (ouvrez un site dans le navigateur).");
+  console.error("  3. Si vous êtes sur un VPN, un proxy d'entreprise ou un réseau très restrictif");
+  console.error("     (bureau, université…), désactivez-le ou essayez depuis un point d'accès mobile.");
+  console.error("  4. Vérifiez que rien ne bloque le trafic HTTPS sortant (pare-feu, antivirus).");
+  console.error("  5. Vérifiez le statut d'Appwrite Cloud : https://status.appwrite.io");
+  console.error("  6. Si vous êtes derrière un proxy obligatoire, définissez HTTPS_PROXY avant de relancer :");
+  console.error("       HTTPS_PROXY=http://votre-proxy:port npm run setup:appwrite");
+}
+
 async function main() {
   console.log(`Connexion à ${ENDPOINT} (projet ${PROJECT_ID})…`);
+  await checkConnectivity();
   await ensureDatabase();
   for (const col of COLLECTIONS) {
     console.log(`\n→ Collection "${col.id}"`);
@@ -325,5 +401,36 @@ async function main() {
 
 main().catch((e) => {
   console.error("✗ Erreur :", e.message);
+
+  const isAppwriteException = e.name === "AppwriteException" || (e.code !== undefined && e.type !== undefined);
+  if (isAppwriteException) {
+    console.error(`  Code Appwrite : ${e.code}`);
+    console.error(`  Type Appwrite : ${e.type || "(non précisé)"}`);
+    if (e.response) console.error(`  Réponse brute : ${JSON.stringify(e.response)}`);
+  }
+
+  if (e.message === "fetch failed" || e.cause) {
+    printNetworkDiagnostics(e);
+  } else if (/not authorized/i.test(e.message)) {
+    console.error("\n  → Le \"type\" Appwrite ci-dessus donne la vraie cause. Les plus fréquentes :");
+    console.error("    • \"general_unauthorized_scope\" → la clé n'a toujours pas le bon scope pour");
+    console.error("      CETTE action précise (vérifiez que vous avez bien cliqué Update/Save après");
+    console.error("      avoir coché Full Access — sur certaines versions, cocher ne suffit pas sans");
+    console.error("      cliquer sur le bouton d'enregistrement).");
+    console.error("    • \"user_unauthorized\" ou \"project_unknown\" → la clé appartient à un AUTRE");
+    console.error("      projet que celui visé. Vérifiez que l'ID en haut de la page Overview de la");
+    console.error(`      console Appwrite correspond exactement à VITE_APPWRITE_PROJECT_ID`);
+    console.error(`      (actuellement : ${PROJECT_ID}) — et que la clé a été créée DANS ce projet,`);
+    console.error("      pas dans un autre projet du même compte.");
+    console.error("    • Clé recréée mais .env.local pas mis à jour → Appwrite n'affiche le secret");
+    console.error("      qu'une seule fois à la création ; si vous avez créé une NOUVELLE clé, il");
+    console.error("      faut copier son nouveau secret dans APPWRITE_API_KEY, l'ancien ne marche plus.");
+    console.error("\n  Pour repartir sur une base saine : supprimez la clé actuelle, créez-en une");
+    console.error("  toute nouvelle avec Full Access coché DÈS LA CRÉATION (pas ajouté après coup),");
+    console.error("  collez son secret dans .env.local, puis relancez : npm run setup:appwrite");
+  } else {
+    console.error("  (Cette erreur vient d'Appwrite lui-même, pas du réseau — vérifiez la clé API,");
+    console.error("   ses scopes, et l'ID du projet dans .env.local.)");
+  }
   process.exit(1);
 });
