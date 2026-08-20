@@ -192,6 +192,11 @@ export default function CollectionManagerPage() {
         .admin-table-row:last-child{border-bottom:none;}
         .row-actions{display:flex; gap:8px; justify-self:end;}
         .row-actions button{font-size:12px; padding:7px 12px;}
+        @media (max-width:640px){
+          .admin-table-head, .admin-table-row{grid-template-columns:1fr; gap:10px; padding:14px 16px;}
+          .admin-table-head span:last-child{display:none;}
+          .row-actions{justify-self:start; flex-wrap:wrap;}
+        }
       `}</style>
     </div>
   );

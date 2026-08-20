@@ -100,6 +100,14 @@ export default function Navbar() {
               </div>
             )}
           </div>
+
+          {/* Le bouton "Nous contacter" de l'en-tête est masqué sur mobile
+              (place limitée à côté du burger) : on le republie ici, dans le
+              panneau du menu, pour que Contact reste atteignable au clavier
+              tactile depuis n'importe quelle page. */}
+          <button type="button" className="mobile-cta" onClick={() => { closeAll(); navigate("/contact"); }}>
+            {t("nav.cta")}
+          </button>
         </div>
 
         <div className="nav-right">
@@ -138,6 +146,7 @@ export default function Navbar() {
         .dropdown-menu a.active{color:var(--maroon); font-weight:600;}
 
         .mobile-more{display:none;}
+        .mobile-cta{display:none;}
 
         .nav-right{display:flex; align-items:center; gap:16px;}
         .lang{font-family:'IBM Plex Mono'; font-size:12px; border:1px solid var(--line-strong); border-radius:20px; padding:5px 12px; display:flex; gap:6px;}
@@ -148,16 +157,20 @@ export default function Navbar() {
         .burger{display:none; flex-direction:column; gap:4px; background:none; border:none;}
         .burger span{width:22px; height:2px; background:var(--ink); display:block;}
         @media (max-width:900px){
-          .nav-links{display:none; position:absolute; top:100%; left:0; right:0; background:var(--paper); flex-direction:column; align-items:flex-start; padding:20px 32px; border-bottom:1px solid var(--line); gap:14px; max-height:80vh; overflow-y:auto;}
+          .nav-links{display:none; position:absolute; top:100%; left:0; right:0; background:var(--paper); flex-direction:column; align-items:stretch; padding:12px 20px 24px; border-bottom:1px solid var(--line); gap:2px; max-height:85vh; overflow-y:auto;}
           .nav-links.open{display:flex;}
-          .burger{display:flex;}
+          .nav-links > a{padding:13px 4px; min-height:44px; display:flex; align-items:center; box-sizing:border-box;}
+          .burger{display:flex; padding:14px 11px; margin:-14px -11px; box-sizing:content-box;}
           .cta{display:none;}
           .dropdown{display:none;}
           .mobile-more{display:block; width:100%;}
-          .mobile-more .dropdown-trigger{width:100%; justify-content:space-between; padding:4px 0;}
-          .mobile-more-list{display:flex; flex-direction:column; gap:12px; padding:12px 0 0 12px;}
-          .mobile-more-list a{font-size:13.5px; color:#544D45;}
+          .mobile-more .dropdown-trigger{width:100%; justify-content:space-between; padding:13px 4px; min-height:44px; box-sizing:border-box;}
+          .mobile-more-list{display:flex; flex-direction:column; gap:2px; padding:2px 0 6px 12px;}
+          .mobile-more-list a{font-size:13.5px; color:#544D45; padding:10px 4px; min-height:40px; display:flex; align-items:center; box-sizing:border-box;}
           .mobile-more-list a.active{color:var(--maroon); font-weight:600;}
+          .mobile-cta{display:block; width:100%; margin-top:14px; background:var(--maroon); color:var(--paper); padding:13px 18px; min-height:46px; font-size:14px; font-weight:600; border-radius:2px; border:none; font-family:inherit;}
+          .lang{padding:2px;}
+          .lang button{padding:9px 12px; min-height:40px; min-width:40px;}
         }
       `}</style>
     </header>
